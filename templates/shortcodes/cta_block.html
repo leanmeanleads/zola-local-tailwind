@@ -1,0 +1,20 @@
+<section class="bg-white py-3">
+  <div class="d-md-flex align-items-center text-center">
+    <div class="row no-gutters justify-content-center w-100 py-0 py-md-2">
+      <div class="col-sm-8 p-3">
+        <h2 class="display-4">{{ heading }}</h2>
+        <p class="lead mb-3">{{ subheading }}</p>
+
+          {% if config.extra.phone_number.value %}
+            <a href="tel:{{ config.extra.phone_number.value }}"
+              class="col-lg-6 col-md-8 col-sm-12 m-1 px-3 py-2 btn btn-lg btn-primary">Call Now
+              {{ config.extra.phone_number.display_value }}</a>
+          {% else %}
+            <a href="#get-a-free-quote"
+              class="col-lg-6 col-md-8 col-sm-12 m-1 px-3 py-2 btn btn-lg btn-primary">Get a
+              Quote</a>
+          {% endif %}
+      </div>
+    </div>
+  </div>
+</section>

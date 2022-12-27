@@ -1,0 +1,87 @@
+{% import "macros/index.html" as home_macros %}
+<!DOCTYPE html>
+<html lang="{% if lang %}{{ lang }}{% else %}en{% endif %}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    {%- if page.extra.do_not_index %}
+    <meta name="robots" content="noindex, nofollow"/>
+    {%- endif %}
+
+    <title>
+        {% block title %}
+        {% if page.title %}
+            {{ page.title  }} | {{ config.extra.niche }} {{ config.extra.location.town | capitalize }} {{ config.extra.location.state | capitalize}}
+        {% else %}
+            {{ config.title }}
+        {% endif %}
+        {% endblock title %}
+    </title>
+    {% if page.description %}
+      <meta name="description" content="{{ page.description }}">
+    {% else %}
+      <meta name="description" content="{{ config.description }}">
+    {% endif %}
+    
+
+    <meta name="ahrefs-site-verification" content="eb471728e533800e779b7102dcd552781fa6c04e5cb16c04814c0bffff775e61">
+
+    <link rel="preconnect" href="https://{{ config.extra.twicpics_id }}.twic.pics">
+    <link rel="dns-prefetch" href="https://{{ config.extra.twicpics_id }}.twic.pics">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link href="/assets/css/theme.css" rel="stylesheet">
+    <script async defer src="https://{{ config.extra.twicpics_id }}.twic.pics/?v1"></script>
+
+    {% block extra_head %}
+    {% if config.extra.google_analytics_id %}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config.extra.google_analytics_id }}">
+    </script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '{{ config.extra.google_analytics_id }}');
+    {% if config.extra.google_adwords_id %}
+    gtag('config', '{{ config.extra.google_adwords_id }}');
+    {% endif %}
+    </script>
+
+    {% if page.path | trim == "/thank-you/" %}
+    <!-- Event snippet for Form Submission Lead conversion page -->
+    <script>
+      gtag('event', 'conversion', {'send_to': '{{ config.extra.google_adwords_id }}/{{ config.extra.google_adwords_form_conversion_id }}'});
+    </script>
+    {% endif %}
+    {% endif %}
+    {% endblock extra_head %}
+</head>
+
+<body class="m-0 font-sans text-base font-normal leading-normal text-left text-gray-500 bg-gray-200" >
+    {% block nav %}
+      {% include "partials/_nav.html" %}
+    {% endblock nav %}
+
+    {% block header %}
+      {% include "partials/_header_remote.html" %}
+    {% endblock header %}
+
+    {% block content %}
+      {{ section.content | safe }}
+    {% endblock content %}
+
+    {% block footer %}
+      {% include "partials/_footer.html" %}
+    {% endblock footer %}
+
+    {% block body_scripts %}
+    {% endblock body_scripts %}
+</body>
+
+</html>

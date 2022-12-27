@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+
+
+
+{% block content %}
+
+<section class="mt-0">
+    <div class="container">
+        <h2>Services</h2>
+            {% for page in section.pages -%}
+            <h3>
+                <a href="{{ page.permalink }}">{{ page.title }}</a>
+            </h3>
+            {% endfor %}
+    </div>
+</section>
+{% endblock content %}

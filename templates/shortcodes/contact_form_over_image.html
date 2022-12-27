@@ -1,0 +1,85 @@
+<section class="bg-dark">
+  <img src="https://{{ config.extra.twicpics_id }}.twic.pics/{{ config.extra.cdn_images_base_path }}/{{ background_image_url }}?twic=v1/output=preview"
+       alt="{{ background_image_alt }}"
+       class="bg-image"
+       data-twic-src="image:{{ config.extra.cdn_images_base_path }}/{{ background_image_url }}">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7 col-sm-10">
+        <div class="card mb-0 card-body py-4"
+             id="get-a-free-quote">
+          <h2 class="h2 d-block">{{ heading }}</h2>
+
+          {% if config.extra.calendly_booking_path %}
+            <div class="calendly-inline-widget" style="min-width:320px;height:1200px;" data-auto-load="false">
+              <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"></script>
+              <script>
+              Calendly.initInlineWidget({
+                url: 'https://calendly.com/{{ config.extra.calendly_booking_path | safe }}?hide_event_type_details=1&a1={{ config.extra.calendly_area_option_number }}'
+              });
+              </script>
+            </div>
+          {% else %}
+            <form name="quote" data-netlify="true" action="/thank-you">
+              <div class="form-group row">
+                <label for="name"
+                      class="col-md-2 col-3 col-form-label">Name</label>
+                <div class="col-md-10 col-9">
+                  <input type="text"
+                        id="name"
+                        class="form-control"
+                        placeholder="Your Name"
+                        name="name"
+                        required
+                        autocomplete="name">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="email"
+                      class="col-md-2 col-3 col-form-label">Email</label>
+                <div class="col-md-10 col-9">
+                  <input type="email"
+                        id="email"
+                        class="form-control"
+                        placeholder="name@example.com"
+                        name="email"
+                        required
+                        autocomplete="email">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="phone"
+                      class="col-md-2 col-3 col-form-label">Phone</label>
+                <div class="col-md-10 col-9">
+                  <input type="tel"
+                        id="phone"
+                        class="form-control"
+                        placeholder=""
+                        name="phone"
+                        required
+                        autocomplete="tel">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="details"
+                      class="col-md-2 col-3 col-form-label">Details</label>
+                <div class="col-md-10 col-9">
+                  <textarea class="form-control"
+                            id="details"
+                            rows="3"
+                            name="details"
+                            placeholder="Details of your job"></textarea>
+                </div>
+              </div>
+              <div>
+                <button class="btn btn-primary btn-lg col-sm-12"
+                        type="submit">{{ submit_cta }}</button>
+              </div>
+            </form>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

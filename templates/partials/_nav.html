@@ -1,0 +1,82 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <span class="h5">{{ config.extra.town }} {{ config.extra.niche }}</span>
+    </a>
+    <div class="d-flex order-lg-3 ml-lg-2">
+      <button class="navbar-toggler ml-2" type="button" data-toggle="collapse" data-target=".navMenu"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse navMenu justify-content-center">
+
+      <ul class="navbar-nav nav-tabs border-0">
+        <li class="nav-item">
+          <a class="nav-link h5" href="/">Home</a>
+        </li>
+
+        {% if config.extra.sections %}
+        <li class="dropdown">
+          <a class="nav-link h5 dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false" id="pages-dropdown">Services</a>
+          <div class="dropdown-menu dropdown-menu-wide p-0 o-hidden" aria-labelledby="pages-dropdown">
+            <div class="list-group list-group-flush">
+              <a href="/services" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2">
+                <div class="d-flex align-items-center">
+                  <div>
+                    <span class="h6 d-block mb-0">All Services</span>
+                  </div>
+                </div>
+              </a>
+              {% set service_section = get_section(path="services/_index.md") %}
+              {% for page in service_section.pages | sort(attribute="title") %}
+              <a href="{{ page.permalink }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2">
+                <div class="d-flex align-items-center">
+                  <div>
+                    <span class="h6 d-block mb-0">{{ page.title }}</span>
+                  </div>
+                </div>
+              </a>
+
+              {% endfor %}
+            </div>
+          </div>
+        </li>
+        {% endif %}
+
+        {% if config.extra.locations %}
+        <li class="dropdown">
+          <a class="nav-link h5 dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false" id="pages-dropdown">Locations We Serve</a>
+          <div class="dropdown-menu dropdown-menu-wide p-0 o-hidden" aria-labelledby="pages-dropdown">
+            <div class="list-group list-group-flush">
+              <a href="/locations-we-serve" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2">
+                <div class="d-flex align-items-center">
+                  <div>
+                    <span class="h6 d-block mb-0">All Locations</span>
+                  </div>
+                </div>
+              </a>
+              {% set locations_section = get_section(path="locations-we-serve/_index.md") %}
+              {% for page in locations_section.pages | sort(attribute="extra.order") %}
+                <a href="{{ page.permalink }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2">
+                  <div class="d-flex align-items-center">
+                    <div>
+                      <span class="h6 d-block mb-0">{{ page.title }}</span>
+                    </div>
+                  </div>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        </li>
+        {% endif %}
+
+        <li class="nav-item">
+          <a class="nav-link h5" href="/contact/">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

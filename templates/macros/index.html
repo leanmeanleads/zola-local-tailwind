@@ -1,0 +1,11 @@
+{% macro phone_link() %}
+<a href="tel:{{ config.extra.phone | replace(from="-", to="") | replace(from=" ", to="") | replace(from="(", to="") | replace(from=")", to="")}}" class="text-white">
+  {{ config.extra.phone }}
+</a>
+{% endmacro phone_link %}
+
+{% macro phone_button() %}
+<a class="btn btn-lg btn-primary btn-block" href="tel:{{ config.extra.phone | replace(from="-", to="") | replace(from=" ", to="") | replace(from="(", to="") | replace(from=")", to="")}}">
+  {{ cta | replace(from="$PHONE_NUMBER", to=config.extra.phone) }}
+</a>
+{% endmacro phone_link %}

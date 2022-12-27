@@ -1,0 +1,5 @@
+<div class="col">
+  {% set page_break_image = resize_image(path="images/" ~ image, op="fill",
+  width=1200, height=500, format="jpg", quality=30) %}
+  <img src="{{ page_break_image.url | safe }}" alt="{{ description }}" class="rounded">
+</div>

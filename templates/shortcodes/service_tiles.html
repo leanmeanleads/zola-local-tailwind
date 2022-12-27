@@ -1,0 +1,32 @@
+{% if config.extra.specialist_clients and page.extra.specialism %}
+  {% set path = path | replace(from="data/", to="data/" ~ page.extra.specialism ~ "/" ) -%}
+{% endif %}
+
+{% set services = load_data(path=path) -%}
+
+<section class="bg-gray py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="display-5 text-center">Services</h2>
+      </div>
+      {% for service in services %}
+      <div class="col-md-3 col-6">
+        <a href="#get-a-free-quote"
+           class="card hover-effect">
+          <img src="https://{{ config.extra.twicpics_id }}.twic.pics/{{ config.extra.cdn_images_base_path }}/{{ service.image_path }}?twic=v1/output=preview"
+               class="card-img-top"
+               data-twic-src="image:{{ config.extra.cdn_images_base_path }}/{{ service.image_path }}"
+               data-twic-transform="cover=600x600"
+               alt="{{ service.description }}">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <h6 class="mb-0">{{ service.description | safe }}</h6>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

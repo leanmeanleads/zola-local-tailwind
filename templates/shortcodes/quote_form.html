@@ -1,0 +1,69 @@
+<div class="col-lg-{% if columns %}{{ columns }}{% else %}{{ 4 }}{% endif %}">
+  <div class="row">
+    <div class="col">
+      <h2 class="h3 d-block">{% if title %}{{ title }}{% else %}Get Your Quote{% endif %}</h2>
+      <form name="contact" data-netlify="true" action="/thank-you">
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="name">Full Name:</label>
+              <input id="name" name="name" type="text" class="form-control" required />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="phone">Phone Number:</label>
+              <input id="phone" name="phone" type="phone" class="form-control" required />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="comments">Comments:</label>
+              <textarea id="comments" name="comments" class="form-control"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group mb-0">
+              <label>Services Required:</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          {% for service in config.extra.services %}
+          <label>
+            <input type="checkbox" name="services[]" value="{{ service }}" /> {{ service }}
+          </label>
+          <br />
+          {% endfor %}
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-lg btn-primary btn-block mb-1" type="submit">
+              Get My Quote
+            </button>
+            <small>* 100% Privacy Guaranteed, see our <a href="/privacy-policy">Privacy Policy</a>.</small>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  {% if image_under %}
+  <div class="row mt-3 mb-3">
+    <div class="col">
+      {% set image_under = resize_image(path="images/" ~ image_under, op="fill", width=400, height=400,
+      format="jpg", quality=30) %}
+      <img src="{{ image_under.url | safe }}" alt="{{ image_description }}" class="rounded">
+    </div>
+  </div>
+  {% endif %}
+</div>

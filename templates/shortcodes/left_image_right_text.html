@@ -1,0 +1,19 @@
+<section class="bg-gray py-1">
+  <div class="container">
+    <div class="row justify-content-center no-gutters flex-fill mb-3">
+      <div class="col-sm-3 pr-4">
+        <img src="https://{{ config.extra.twicpics_id }}.twic.pics/{{ config.extra.cdn_images_base_path }}/{{ image_path }}?twic=v1/output=preview"
+             class="d-none d-sm-block"
+             data-twic-src="image:{{ config.extra.cdn_images_base_path}}/{{ image_path }}"
+             alt="{{ image_description }}">
+      </div>
+      <div class="col-sm-6 d-flex flex-column">
+        <div class="p-2">
+          <h2>{{ heading }}</h2>
+          <p class="lead">{{ intro }}</p>
+          {{ body | markdown | safe }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

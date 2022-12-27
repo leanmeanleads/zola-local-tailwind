@@ -1,0 +1,73 @@
+{% import "macros/index.html" as home_macros %}
+<!DOCTYPE html>
+<html lang="{% if lang %}{{ lang }}{% else %}en{% endif %}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+
+    <title>
+        {% block title %}
+        {% if page.title %}
+            {{ page.title  }} | {{ config.extra.niche | capitalize }} {{ config.extra.location.town | capitalize }} {{ config.extra.location.state | capitalize}}
+        {% else %}
+            {{ config.title }}
+        {% endif %}
+        {% endblock title %}
+    </title>
+    <meta name="description" content="{{ config.description }}">
+
+    <link rel="stylesheet" href="/assets/css/theme.css" type="text/css" media="all">
+
+    <meta name="ahrefs-site-verification" content="eb471728e533800e779b7102dcd552781fa6c04e5cb16c04814c0bffff775e61">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    {% block extra_head %}
+    {% if config.extra.google_analytics_id %}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ config.extra.google_analytics_id }}">
+        </script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '{{ config.extra.google_analytics_id }}');
+        {% if config.extra.google_adwords_id %}
+        gtag('config', '{{ config.extra.google_adwords_id }}');
+        {% endif %}
+        </script>
+    {% endif %}
+    {% endblock extra_head %}
+</head>
+
+<body>
+    {% block nav %}
+        {% include "partials/_nav.html" %}
+    {% endblock nav %}
+
+    {% block header %}
+        {% include "partials/_header_remote.html" %}
+    {% endblock header %}
+
+    <main id="main" tabindex="-1">
+        {% block content %}
+        {{ section.content | safe }}
+        {% endblock content %}
+    </main>
+
+    {% include "partials/_footer.html" %}
+    
+
+    <!-- TODO: Enable just the parts we need for interactive menus. -->
+    <script type="text/javascript" src="/assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/js/popper.min.js"></script>
+    <script type="text/javascript" src="/assets/js/bootstrap.js"></script>
+</body>
+
+</html>

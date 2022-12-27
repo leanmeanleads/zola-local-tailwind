@@ -1,0 +1,9 @@
+{% import "macros/index.html" as home_macros %}
+<div class="col mb-3 mb-lg-0">
+  <div class="pr-lg-7">
+    {{ body | markdown | safe }} <br>
+    {% if cta %}
+    {{ home_macros::phone_button(cta=cta) }}
+    {% endif %}
+  </div>
+</div>

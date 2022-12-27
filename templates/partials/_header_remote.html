@@ -1,0 +1,19 @@
+<section class="{% if page and page.extra.image_name %}height-xs-30 height-md-60{% else %}height-xs-30 height-md-40{% endif %} bg-gradient">
+  {% if page and page.extra.image_name %}
+  {% set header_image_url = "https://7udfuvi8.twic.pics/images/" ~ page.extra.image_name ~ "?twic=v1/cover=1000x400/quality=40" %}
+  {% else %}
+  {% set header_image_url = "https://7udfuvi8.twic.pics/images/" ~ config.extra.heading_image ~ "?twic=v1/cover=1000x300/quality=40" %}
+  {% endif %}
+  <img src="{{ header_image_url | safe }}" alt="Image" class="bg-image opacity-60">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col">
+        <h1 class="display-4 text-white">{{ config.extra.niche }} {{ config.extra.town }} {{config.extra.state }}</h1>
+        <h2 class="display-4 text-white pt-2" style="text-decoration: underline;">{{ home_macros::phone_link() }}</h2>
+        {% if config.extra.show_client_name %}
+          <h2 class="display-6 text-white mt-4">On behalf of {{ config.extra.client.name }}, {{ config.extra.town }}</h2>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
