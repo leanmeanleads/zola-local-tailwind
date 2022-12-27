@@ -1,85 +1,85 @@
-<section class="bg-dark">
+<section class="block relative py-16 px-0 leading-6 text-left text-gray-500 bg-slate-800">
   <img src="https://{{ config.extra.twicpics_id }}.twic.pics/{{ config.extra.cdn_images_base_path }}/{{ background_image_url }}?twic=v1/output=preview"
        alt="{{ background_image_alt }}"
-       class="bg-image"
+       class="object-cover absolute top-0 left-0 z-0 flex-shrink-0 w-full max-w-full h-full text-left align-middle border-none"
        data-twic-src="image:{{ config.extra.cdn_images_base_path }}/{{ background_image_url }}">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-7 col-sm-10">
-        <div class="card mb-0 card-body py-4"
+  <div class="px-3 mx-auto w-full md:w-8/12 lg:w-6/12 text-left">
+    <div class="flex flex-wrap justify-center w-full text-gray-500">
+      <div class="relative px-3 w-full sm:flex-shrink-0 sm:flex-grow-0 lg:flex-shrink-0 lg:flex-grow-0"
+           style="min-height: 1px;">
+        <div class="flex relative flex-col flex-auto py-4 px-4 md:py-8 md:px-8 w-full min-w-0 break-words bg-clip-border bg-white rounded-md border-0 border-solid border-neutral-200"
              id="get-a-free-quote">
-          <h2 class="h2 d-block">{{ heading }}</h2>
+          <h2 class="block mt-0 mb-4 text-3xl font-semibold text-slate-800"
+              style="line-height: 1.2;">
+            {{ heading }}
+          </h2>
 
-          {% if config.extra.calendly_booking_path %}
-            <div class="calendly-inline-widget" style="min-width:320px;height:1200px;" data-auto-load="false">
-              <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"></script>
-              <script>
-              Calendly.initInlineWidget({
-                url: 'https://calendly.com/{{ config.extra.calendly_booking_path | safe }}?hide_event_type_details=1&a1={{ config.extra.calendly_area_option_number }}'
-              });
-              </script>
+          <form name="quote"
+                data-netlify="true"
+                action="/thank-you">
+            <div class="flex flex-wrap mb-4 w-full">
+              <label for="name"
+                     class="inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800">Name</label>
+              <div class="relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5">
+                <input type="text"
+                       id="name"
+                       class="block overflow-visible py-2 px-4 m-0 w-full h-10 text-base leading-normal bg-clip-padding rounded border border-gray-300 border-solid cursor-text text-slate-800 focus:border-sky-300 focus:bg-white focus:text-slate-800"
+                       placeholder="Your Name"
+                       name="name"
+                       required
+                       autocomplete="name"
+                       data-form-type="name">
+              </div>
             </div>
-          {% else %}
-            <form name="quote" data-netlify="true" action="/thank-you">
-              <div class="form-group row">
-                <label for="name"
-                      class="col-md-2 col-3 col-form-label">Name</label>
-                <div class="col-md-10 col-9">
-                  <input type="text"
-                        id="name"
-                        class="form-control"
-                        placeholder="Your Name"
-                        name="name"
-                        required
-                        autocomplete="name">
-                </div>
+            <div class="flex flex-wrap mb-4 w-full">
+              <label for="email"
+                     class="inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800">Email</label>
+              <div class="relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5">
+                <input type="email"
+                       id="email"
+                       class="block overflow-visible py-1 px-4 m-0 w-full h-10 text-base leading-normal bg-clip-padding rounded border border-gray-300 border-solid cursor-text text-slate-800 focus:border-sky-300 focus:bg-white focus:text-slate-800"
+                       placeholder="name@example.com"
+                       name="email"
+                       required
+                       autocomplete="email">
               </div>
-              <div class="form-group row">
-                <label for="email"
-                      class="col-md-2 col-3 col-form-label">Email</label>
-                <div class="col-md-10 col-9">
-                  <input type="email"
-                        id="email"
-                        class="form-control"
-                        placeholder="name@example.com"
-                        name="email"
-                        required
-                        autocomplete="email">
-                </div>
+            </div>
+            <div class="flex flex-wrap mb-4 w-full">
+              <label for="phone"
+                     class="inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800">Phone</label>
+              <div class="relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5">
+                <input type="tel"
+                       id="phone"
+                       class="block overflow-visible py-1 px-4 m-0 w-full h-10 text-base leading-normal bg-clip-padding rounded border border-gray-300 border-solid cursor-text text-slate-800 focus:border-sky-300 focus:bg-white focus:text-slate-800"
+                       placeholder=""
+                       name="phone"
+                       required
+                       autocomplete="tel">
               </div>
-              <div class="form-group row">
-                <label for="phone"
-                      class="col-md-2 col-3 col-form-label">Phone</label>
-                <div class="col-md-10 col-9">
-                  <input type="tel"
-                        id="phone"
-                        class="form-control"
-                        placeholder=""
-                        name="phone"
-                        required
-                        autocomplete="tel">
-                </div>
+            </div>
+            <div class="flex flex-wrap mb-4 w-full">
+              <label for="details"
+                     class="inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800">Details</label>
+              <div class="relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5">
+                <textarea class="block overflow-auto py-1 px-4 m-0 w-full h-25 text-base leading-normal whitespace-pre-wrap bg-clip-padding rounded border border-gray-300 border-solid cursor-text resize-y text-slate-800 focus:border-sky-300 focus:bg-white focus:text-slate-800"
+                          id="details"
+                          rows="3"
+                          name="details"
+                          placeholder="Details of your job"></textarea>
               </div>
-              <div class="form-group row">
-                <label for="details"
-                      class="col-md-2 col-3 col-form-label">Details</label>
-                <div class="col-md-10 col-9">
-                  <textarea class="form-control"
-                            id="details"
-                            rows="3"
-                            name="details"
-                            placeholder="Details of your job"></textarea>
-                </div>
-              </div>
-              <div>
-                <button class="btn btn-primary btn-lg col-sm-12"
-                        type="submit">{{ submit_cta }}</button>
-              </div>
-            </form>
-          {% endif %}
+            </div>
+            <div>
+              <button class="inline-block overflow-visible relative py-2 px-4 m-0 w-full text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer select-none sm:max-w-full sm:flex-shrink-0 sm:flex-grow-0 sm:basis-full border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white"
+                      type="submit">{{ submit_cta }}</button>
+            </div>
+          </form>
+
 
         </div>
       </div>
     </div>
   </div>
 </section>
+
+
+

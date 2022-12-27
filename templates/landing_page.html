@@ -67,22 +67,46 @@
   {% set client_address = config.extra.client.address %}
 {% endif %}
 
-<footer class="bg-dark spacer-y-1">
-  <div class="container">
-    <div class="row justify-content-between align-items-center mt-3 mt-md-4">
-      <div class="col text-white">
+<footer
+  class="block py-3 leading-6 text-left text-gray-500 md:py-6 bg-slate-800"
+>
+  <div class="px-3 mx-auto w-full text-left max-w-5xl">
+    <div
+      class="flex flex-wrap justify-between items-center -mx-3 mt-6 w-full text-gray-500 md:mt-8"
+    >
+      <div
+        class="relative flex-grow px-3 w-full max-w-full text-white basis-0"
+        style="min-height: 1px;"
+      >
         We serve {{ config.extra.town }} and surrounding areas: {{ config.extra.surrounding_areas | join(sep=", ") }}
       </div>
     </div>
-    <div class="row justify-content-between align-items-center px-2 mt-3 mt-md-4">
-        <p class="text-small text-white opacity-50">&copy; {{ now() | date(format="%Y") }} {{ client_name }} {{ client_address }}, {{ config.extra.google_ads_tracking_number }}</p>
-        <ul class="list-unstyled d-flex list-pipe-separator">
-          <li><a href="/privacy-policy"
-               class="text-white text-small">Privacy Policy</a></li>
-          <li><a href="/terms-and-conditions"
-               class="text-white text-small">Terms and Conditions</a></li>
-        </ul>
+    <div
+      class="flex flex-wrap justify-between items-center px-3 -mx-3 mt-6 w-full text-gray-500 md:mt-8"
+    >
+      <p class="mt-0 mb-4 text-sm leading-5 text-white opacity-50">
+        &copy; {{ now() | date(format="%Y") }} {{ client_name }} {{ client_address }}, {{ config.extra.google_ads_tracking_number }}
+      </p>
+      <ul class="flex pl-0 mt-0 mb-4" style="list-style: none;">
+        <li class="" style="list-style: outside none none;">
+          <a
+            href="/privacy-policy"
+            class="text-sm font-semibold leading-5 text-white bg-transparent cursor-pointer hover:text-sky-700 mr-4"
+            style="text-decoration: none; list-style: outside none none;"
+            >Privacy Policy</a
+          >
+        </li>
+        <li class="" style="list-style: outside none none;">
+          <a
+            href="/terms-and-conditions"
+            class="text-sm font-semibold leading-5 text-white bg-transparent cursor-pointer hover:text-sky-700"
+            style="text-decoration: none; list-style: outside none none;"
+            >Terms and Conditions</a
+          >
+        </li>
+      </ul>
     </div>
   </div>
 </footer>
+
 {% endblock footer %}
