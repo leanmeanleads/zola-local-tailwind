@@ -1,34 +1,46 @@
 {% if config.extra.specialist_clients and page.extra.specialism %}
-  {% set path = path | replace(from="data/", to="data/" ~ page.extra.specialism ~ "/" ) -%}
+{% set path = path | replace(from="data/", to="data/" ~ page.extra.specialism ~ "/" ) -%}
 {% endif %}
 
 {% set reviews = load_data(path=path) -%}
-<section class="bg-gray pt-1 pb-2">
-  <div class="container">
-    <div class="row pb-2">
-      <div class="col-12">
-        <h2 class="display-5 text-center">{{ heading }}</h2>
+
+
+
+<section class="block relative px-0 pt-1 pb-3 leading-6 text-left text-gray-500">
+  <div class="px-3 mx-auto w-9/12 text-left">
+    <div class="flex flex-wrap pb-3 -mx-3 w-full text-gray-500">
+      <div class="relative flex-grow-0 flex-shrink-0 px-3 w-full max-w-full basis-full"
+           style="min-height: 1px;">
+        <h2 class="mt-0 mb-4 text-3xl font-semibold text-center text-slate-800"
+            style="line-height: 1.2;">
+          {{ heading }}
+        </h2>
       </div>
+
       {% for review in reviews %}
-      <div class="col-sm-6">
+      <div class="relative px-3 w-full sm:flex-shrink-0 sm:flex-grow-0 sm:basis-1/2"
+           style="min-height: 1px;">
         <img src="https://{{ config.extra.twicpics_id }}.twic.pics/{{ config.extra.cdn_images_base_path }}/{{ review.image_path }}?twic=v1/output=preview"
-             class="card-img-top pb-2"
+             class="flex-shrink-0 pb-3 w-full max-w-full align-middle border-none"
              data-twic-src="image:{{ config.extra.cdn_images_base_path }}/{{ review.image_path }}"
-             alt="{{ review.content }}">
+             alt="{{ review.content }}"
+             style="border-top-left-radius: 6px; border-top-right-radius: 6px;">
       </div>
       {% endfor %}
-    </div> 
+    </div>
+
     {% if show_phone_cta and config.extra.phone_number.value %}
-    <div class="row justify-content-center">
+    <div class="flex flex-wrap justify-center -mx-3 w-full text-gray-500">
       <a href="tel:{{ config.extra.phone_number.value }}"
-         class="col-lg-6 col-md-8 col-sm-12 m-1 px-3 py-2 btn btn-lg btn-primary">Call Now {{ config.extra.phone_number.display_value }}</a>
+         class="inline-block relative py-3 px-6 m-1 w-full text-xl font-bold leading-normal text-center text-white align-middle whitespace-nowrap rounded border border-solid cursor-pointer select-none sm:max-w-full sm:flex-shrink-0 sm:flex-grow-0 sm:basis-full md:flex-shrink-0 md:flex-grow-0 lg:flex-shrink-0 lg:flex-grow-0 lg:basis-1/2 border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white"
+         style="text-decoration: none; min-height: 1px; transition: none 0s ease 0s;">Call Now {{ config.extra.phone_number.display_value }}</a>
     </div>
     {% else %}
-    <div class="row justify-content-center">
+    <div class="flex flex-wrap justify-center -mx-3 w-full text-gray-500">
       <a href="#get-a-free-quote"
-        class="col-lg-6 col-md-8 col-sm-12 m-1 px-3 py-2 btn btn-lg btn-primary">Get a
-        Quote</a>
-        </div>
+         class="inline-block relative py-3 px-6 m-1 w-full text-xl font-bold leading-normal text-center text-white align-middle whitespace-nowrap rounded border border-solid cursor-pointer select-none sm:max-w-full sm:flex-shrink-0 sm:flex-grow-0 sm:basis-full md:flex-shrink-0 md:flex-grow-0 lg:flex-shrink-0 lg:flex-grow-0 lg:basis-1/2 border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white"
+         style="text-decoration: none; min-height: 1px; transition: none 0s ease 0s;">Get a Quote</a>
+    </div>
     {% endif %}
   </div>
 </section>

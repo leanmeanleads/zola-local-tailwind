@@ -4,30 +4,42 @@
 
 {% set examples = load_data(path=path) -%}
 
-<section class="bg-gray pt-1 pb-4">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <h2 class="display-5 text-center">{{ heading }}</h2>
+<section class="block relative py-8 px-0 leading-6 text-left text-gray-500">
+  <div class="px-3 mx-auto w-9/12 text-left">
+    <div class="flex flex-wrap -mx-3 w-full text-gray-500">
+      <div class="relative flex-grow-0 flex-shrink-0 px-3 w-full max-w-full basis-full"
+           style="min-height: 1px;">
+        <h2 class="mt-0 mb-4 text-3xl font-semibold text-center text-slate-800"
+            style="line-height: 1.2;">
+          {{ heading }}
+        </h2>
       </div>
+
       {% for example in examples %}
-      <div class="col-6 col-md-3 d-flex">
+
+      <div class="w-3/12 px-2">
         <a href="#get-a-free-quote"
-           class="card hover-effect">
+           class="flex overflow-hidden relative top-0 flex-col mb-3 w-full min-w-0 font-semibold break-words bg-clip-border bg-white rounded-md border-0 border-solid cursor-pointer md:mb-6 border-neutral-200 text-sky-500 hover:-top-1.5 hover:text-sky-700"
+           style="text-decoration: none; transition: top 0.2s ease 0s, box-shadow 0.2s ease 0s; box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;">
           <img src="https://{{ config.extra.twicpics_id }}.twic.pics/{{ config.extra.cdn_images_base_path }}/{{ example.image_path }}?twic=v1/output=preview"
-               class="card-img-top"
+               class="flex-shrink-0 w-full max-w-full align-middle border-none"
                data-twic-src="image:{{ config.extra.cdn_images_base_path }}/{{ example.image_path }}"
                data-twic-transform="cover=600x600"
-               alt="{{ example.caption | safe }}">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-              <h6 class="mb-0">{{ example.caption | safe }}</h6>
+               alt="{{ example.caption | safe }}"
+               style="border-top-left-radius: 6px; border-top-right-radius: 6px;" />
+          <div class="flex-auto py-4 px-6">
+            <div class="flex justify-between items-center">
+              <h6 class="my-0 text-base text-slate-800"
+                  style="line-height: 1.2;">
+        {{ example.caption | safe }}
+              </h6>
             </div>
           </div>
         </a>
       </div>
       {% endfor %}
     </div>
+
     {% if show_phone_cta and config.extra.phone_number.value %}
     <div class="row justify-content-center">
       <a href="tel:{{ config.extra.phone_number.value }}"
