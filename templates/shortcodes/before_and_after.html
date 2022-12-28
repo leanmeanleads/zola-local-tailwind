@@ -22,7 +22,7 @@
            class="flex overflow-hidden relative top-0 flex-col mb-3 w-full min-w-0 font-semibold break-words bg-clip-border bg-white rounded-md border-0 border-solid cursor-pointer md:mb-6 border-neutral-200 text-sky-500 hover:-top-1.5 hover:text-sky-700"
            style="text-decoration: none; transition: top 0.2s ease 0s, box-shadow 0.2s ease 0s; box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;">
           <img src="https://{{ config.extra.twicpics_id }}.twic.pics/{{ config.extra.cdn_images_base_path }}/{{ example.image_path }}?twic=v1/output=preview"
-               class="flex-shrink-0 w-full max-w-full align-middle border-none"
+               class="flex-shrink-0 w-full max-w-full align-middle border-none h-48 object-cover"
                data-twic-src="image:{{ config.extra.cdn_images_base_path }}/{{ example.image_path }}"
                data-twic-transform="cover=600x600"
                alt="{{ example.caption | safe }}"
