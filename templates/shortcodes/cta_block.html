@@ -3,21 +3,21 @@
     <div class="flex flex-wrap justify-center py-0 mx-0 w-full text-gray-500 md:py-3  max-w-5xl">
       <div class="relative py-6 px-0 w-full sm:flex-shrink-0 sm:flex-grow-0"
            style="min-height: 1px;">
-        <h2 class="mt-0 mb-4 text-5xl font-semibold text-slate-800"
+        <h2 class="mt-0 mb-4 text-3xl md:text-5xl font-semibold text-slate-800"
             style="line-height: 1.2;">
           {{ heading }}
         </h2>
-        <p class="mt-0 mb-6 text-xl font-normal leading-7">
+        <p class="mt-0 mb-6 text-lg md:text-xl font-normal leading-7">
           {{ subheading }}
         </p>
 
         {% if config.extra.phone_number.value %}
         <a href="tel:{{ config.extra.phone_number.value }}"
-           class="inline-block relative py-3 px-6 m-1 w-full text-xl font-bold leading-normal text-white align-middle whitespace-nowrap rounded border border-solid cursor-pointer select-none sm:max-w-full sm:flex-shrink-0 sm:flex-grow-0 sm:basis-full md:flex-shrink-0 md:flex-grow-0 lg:flex-shrink-0 lg:flex-grow-0 lg:basis-1/2 border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white w-6/12"
+           class="inline-block relative py-3 px-6 m-1 w-10/12 md:w-6/12 text-xl font-bold leading-normal text-white align-middle whitespace-nowrap rounded border border-solid cursor-pointer select-none sm:max-w-full sm:flex-shrink-0 sm:flex-grow-0 sm:basis-full md:flex-shrink-0 md:flex-grow-0 lg:flex-shrink-0 lg:flex-grow-0 lg:basis-1/2 border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white w-6/12"
            style="text-decoration: none; min-height: 1px; transition: none 0s ease 0s;">Call Now {{ config.extra.phone_number.display_value }}</a>
         {% else %}
         <a href="#get-a-free-quote"
-           class="inline-block relative py-3 px-6 m-1 w-full text-xl font-bold leading-normal text-white align-middle whitespace-nowrap rounded border border-solid cursor-pointer select-none sm:max-w-full sm:flex-shrink-0 sm:flex-grow-0 sm:basis-full md:flex-shrink-0 md:flex-grow-0 lg:flex-shrink-0 lg:flex-grow-0 lg:basis-1/2 border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white w-6/12"
+           class="inline-block relative py-3 px-6 m-1 w-10/12 md:w-6/12 text-xl font-bold leading-normal text-white align-middle whitespace-nowrap rounded border border-solid cursor-pointer select-none sm:max-w-full sm:flex-shrink-0 sm:flex-grow-0 sm:basis-full md:flex-shrink-0 md:flex-grow-0 lg:flex-shrink-0 lg:flex-grow-0 lg:basis-1/2 border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white w-6/12"
            style="text-decoration: none; min-height: 1px; transition: none 0s ease 0s;">Get a Quote</a>
         {% endif %}
       </div>
