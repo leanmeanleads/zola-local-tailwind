@@ -44,8 +44,9 @@ type alias StageDescription =
 
 stageDescriptions : List StageDescription
 stageDescriptions =
-    [ StageDescription ChooseSurface "Choose Surface" [ Block, Resin, Concrete, Tarmac ] 0
+    [ StageDescription ChooseMaterial "Choose Material" [ Block, Resin, Concrete, Tarmac ] 0
     , StageDescription SelectArea "Select Area" [ Small, Medium, Large, ExtraLarge ] 1
+    , StageDescription GetQuote "Get Quote" [] 1
     ]
 
 
@@ -61,8 +62,9 @@ type Choice
 
 
 type Stage
-    = ChooseSurface
+    = ChooseMaterial
     | SelectArea
+    | GetQuote
 
 
 type alias Model =
@@ -72,12 +74,28 @@ type alias Model =
     , stage : Stage
     , material : Choice
     , area : Choice
+    , quote : Range
     }
+
+
+firstStage : Stage
+firstStage =
+    ChooseMaterial
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model "rails" [] Nothing ChooseSurface Block Small, Cmd.none )
+    let
+        defaultMaterial =
+            Block
+
+        defaultArea =
+            Small
+
+        quote =
+            calculateQuote defaultMaterial defaultArea
+    in
+    ( Model "rails" [] Nothing firstStage defaultMaterial defaultArea quote, Cmd.none )
 
 
 decoder : Decoder (List Repo)
@@ -111,24 +129,28 @@ type Msg
     | ChangeTo Stage Choice
 
 
+indexOfStage : Stage -> Int
+indexOfStage currentStage =
+    Maybe.withDefault 0 (orderedStages |> ListExtra.elemIndex currentStage)
+
+
 nextStage : Stage -> Stage
 nextStage currentStage =
-    case currentStage of
-        ChooseSurface ->
-            SelectArea
-
-        SelectArea ->
-            SelectArea
+    Maybe.withDefault firstStage (orderedStages |> ListExtra.getAt (indexOfStage currentStage + 1))
 
 
 previousStage : Stage -> Stage
 previousStage currentStage =
-    case currentStage of
-        ChooseSurface ->
-            ChooseSurface
+    Maybe.withDefault firstStage (orderedStages |> ListExtra.getAt (indexOfStage currentStage - 1))
 
-        SelectArea ->
-            ChooseSurface
+
+type alias Range =
+    { start : Int, end : Int }
+
+
+calculateQuote : Choice -> Choice -> Range
+calculateQuote materialChoice areaChoice =
+    Range 10 100
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -136,11 +158,14 @@ update msg model =
     case msg of
         ChangeTo stage choice ->
             case stage of
-                ChooseSurface ->
+                ChooseMaterial ->
                     ( { model | material = choice }, Cmd.none )
 
                 SelectArea ->
                     ( { model | area = choice }, Cmd.none )
+
+                GetQuote ->
+                    ( { model | quote = calculateQuote model.material model.area }, Cmd.none )
 
         NextStage ->
             ( { model | stage = nextStage model.stage }, Cmd.none )
@@ -169,20 +194,21 @@ sendGet msg theUrl theDecoder =
         |> Http.send msg
 
 
+orderedStages : List Stage
+orderedStages =
+    [ ChooseMaterial, SelectArea, GetQuote ]
+
+
 stageCompleteOrActive : Stage -> Stage -> Bool
 stageCompleteOrActive currentStage stage =
-    case ( currentStage, stage ) of
-        ( ChooseSurface, ChooseSurface ) ->
-            True
+    let
+        currentStageIndex =
+            Maybe.withDefault 0 (orderedStages |> ListExtra.elemIndex currentStage)
 
-        ( ChooseSurface, SelectArea ) ->
-            False
-
-        ( SelectArea, ChooseSurface ) ->
-            True
-
-        ( SelectArea, SelectArea ) ->
-            True
+        stageIndex =
+            Maybe.withDefault 0 (orderedStages |> ListExtra.elemIndex stage)
+    in
+    stageIndex <= currentStageIndex
 
 
 renderStep : Model -> StageDescription -> Html Msg
@@ -208,33 +234,35 @@ renderStep model stageDescription =
 
             else
                 " border-2  border-gray-500 "
+
         progressBar =
-             if stageDescription.stage == ChooseSurface then
-               []
-             else if stageCompleteOrActive model.stage stageDescription.stage then
-             [div
-                [ Attr.class "absolute flex align-center items-center align-middle content-center"
-                , Attr.style "width" "calc(100% - 2.5rem - 1rem)"
-                , Attr.style "top" "50%"
-                , Attr.style "transform" "translate(-50%, -50%)"
-                ]
-                [ div [ Attr.class "w-full bg-gray-200 rounded items-center align-middle align-center flex-1" ]
-                    [ div [ Attr.class "w-0 bg-green-300 py-1 rounded", Attr.style "width" "100%" ] []
+            if stageDescription.stage == ChooseMaterial then
+                []
+
+            else if stageCompleteOrActive model.stage stageDescription.stage then
+                [ div
+                    [ Attr.class "absolute flex align-center items-center align-middle content-center"
+                    , Attr.style "width" "calc(100% - 2.5rem - 1rem)"
+                    , Attr.style "top" "50%"
+                    , Attr.style "transform" "translate(-50%, -50%)"
                     ]
-                ]
+                    [ div [ Attr.class "w-full bg-gray-200 rounded items-center align-middle align-center flex-1" ]
+                        [ div [ Attr.class "w-0 bg-green-300 py-1 rounded", Attr.style "width" "100%" ] []
+                        ]
+                    ]
                 ]
 
-             else
-             [div
-                [ Attr.class "absolute flex align-center items-center align-middle content-center"
-                , Attr.style "width" "calc(100% - 2.5rem - 1rem)"
-                , Attr.style "top" "50%"
-                , Attr.style "transform" "translate(-50%, -50%)"
-                ]
-                [ div [ Attr.class "w-full bg-gray-200 rounded items-center align-middle align-center flex-1" ]
-                    [ div [ Attr.class "w-0 bg-green-300 py-1 rounded", Attr.style "width" "0%" ] []
+            else
+                [ div
+                    [ Attr.class "absolute flex align-center items-center align-middle content-center"
+                    , Attr.style "width" "calc(100% - 2.5rem - 1rem)"
+                    , Attr.style "top" "50%"
+                    , Attr.style "transform" "translate(-50%, -50%)"
                     ]
-                ]
+                    [ div [ Attr.class "w-full bg-gray-200 rounded items-center align-middle align-center flex-1" ]
+                        [ div [ Attr.class "w-0 bg-green-300 py-1 rounded", Attr.style "width" "0%" ] []
+                        ]
+                    ]
                 ]
     in
     div
@@ -243,27 +271,29 @@ renderStep model stageDescription =
         [ div
             [ Attr.class "relative mb-2"
             ]
-            (progressBar ++ [div
-                [ Attr.class ("w-10 h-10 mx-auto rounded-full text-lg flex items-center " ++ backgroundClass ++ textClass ++ borderClass)
-                ]
-                [ span
-                    [ Attr.class ("text-center w-full" ++ textClass)
-                    ]
-                    [ svg
-                        [ SvgAttr.class "w-full fill-current"
-                        , SvgAttr.viewBox "0 0 24 24"
-                        , SvgAttr.width "24"
-                        , SvgAttr.height "24"
+            (progressBar
+                ++ [ div
+                        [ Attr.class ("w-10 h-10 mx-auto rounded-full text-lg flex items-center " ++ backgroundClass ++ textClass ++ borderClass)
                         ]
-                        [ path
-                            [ SvgAttr.class "heroicon-ui"
-                            , SvgAttr.d "M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2zm14 8V5H5v6h14zm0 2H5v6h14v-6zM8 9a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
+                        [ span
+                            [ Attr.class ("text-center w-full" ++ textClass)
                             ]
-                            []
+                            [ svg
+                                [ SvgAttr.class "w-full fill-current"
+                                , SvgAttr.viewBox "0 0 24 24"
+                                , SvgAttr.width "24"
+                                , SvgAttr.height "24"
+                                ]
+                                [ path
+                                    [ SvgAttr.class "heroicon-ui"
+                                    , SvgAttr.d "M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2zm14 8V5H5v6h14zm0 2H5v6h14v-6zM8 9a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
+                                    ]
+                                    []
+                                ]
+                            ]
                         ]
-                    ]
-                ]
-            ])
+                   ]
+            )
         , div
             [ Attr.class "text-xs text-center md:text-base"
             ]
@@ -283,11 +313,11 @@ navigation model =
         [ div [ Attr.class "flex" ] renderSteps ]
 
 
-renderChooseSurface : Model -> Html Msg
-renderChooseSurface model =
+renderChooseMaterial : Model -> Html Msg
+renderChooseMaterial model =
     let
         visibleClass =
-            if model.stage == ChooseSurface then
+            if model.stage == ChooseMaterial then
                 ""
 
             else
@@ -296,10 +326,30 @@ renderChooseSurface model =
     div
         [ Attr.class ("flex flex-wrap " ++ visibleClass)
         ]
-        [ item model ChooseSurface Block "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-        , item model ChooseSurface Resin "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-        , item model ChooseSurface Concrete "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-        , item model ChooseSurface Tarmac "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+        [ selection model ChooseMaterial Block "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+        , selection model ChooseMaterial Resin "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+        , selection model ChooseMaterial Concrete "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+        , selection model ChooseMaterial Tarmac "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+        ]
+
+
+renderGetQuote : Model -> Html Msg
+renderGetQuote model =
+    let
+        visibleClass =
+            if model.stage == GetQuote then
+                ""
+
+            else
+                "hidden"
+    in
+    div
+        [ Attr.class ("flex flex-wrap " ++ visibleClass)
+        ]
+        [ div
+            [ Attr.class "w-full md:w-1/4 p-2"
+            ]
+            [ text "Area" ]
         ]
 
 
@@ -316,19 +366,19 @@ renderSelectArea model =
     div
         [ Attr.class ("flex flex-wrap " ++ visibleClass)
         ]
-        [ item model SelectArea Small "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-        , item model SelectArea Medium "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-        , item model SelectArea Large "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-        , item model SelectArea ExtraLarge "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+        [ selection model SelectArea Small "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+        , selection model SelectArea Medium "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+        , selection model SelectArea Large "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+        , selection model SelectArea ExtraLarge "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
         ]
 
 
-item : Model -> Stage -> Choice -> String -> String -> Html Msg
-item model itemStage choice subheading urlString =
+selection : Model -> Stage -> Choice -> String -> String -> Html Msg
+selection model selectionStage choice subheading urlString =
     let
         checked =
-            case itemStage of
-                ChooseSurface ->
+            case selectionStage of
+                ChooseMaterial ->
                     if model.material == choice then
                         [ Attr.attribute "checked" "checked" ]
 
@@ -341,6 +391,9 @@ item model itemStage choice subheading urlString =
 
                     else
                         []
+
+                GetQuote ->
+                    []
 
         heading =
             case choice of
@@ -369,12 +422,15 @@ item model itemStage choice subheading urlString =
                     "Extra Large"
 
         name =
-            case itemStage of
-                ChooseSurface ->
+            case selectionStage of
+                ChooseMaterial ->
                     "material"
 
                 SelectArea ->
                     "area"
+
+                GetQuote ->
+                    "get_quote"
     in
     div
         [ Attr.class "w-1/2 md:w-1/4 p-2"
@@ -387,7 +443,7 @@ item model itemStage choice subheading urlString =
                  , Attr.name name
                  , Attr.class "invisible absolute peer"
                  , Attr.value heading
-                 , onClick (ChangeTo itemStage choice)
+                 , onClick (ChangeTo selectionStage choice)
                  ]
                     ++ checked
                 )
@@ -450,8 +506,9 @@ view : Model -> Html Msg
 view model =
     div []
         [ navigation model
-        , renderChooseSurface model
+        , renderChooseMaterial model
         , renderSelectArea model
+        , renderGetQuote model
         , actions model
         , div []
             [ input

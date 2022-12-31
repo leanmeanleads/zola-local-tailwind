@@ -9785,15 +9785,29 @@ var $elm$core$Basics$never = function (_v0) {
 };
 var $elm$browser$Browser$element = _Browser_element;
 var $author$project$Main$Block = {$: 'Block'};
-var $author$project$Main$ChooseSurface = {$: 'ChooseSurface'};
-var $author$project$Main$Model = F6(
-	function (query, repos, error, stage, material, area) {
-		return {area: area, error: error, material: material, query: query, repos: repos, stage: stage};
+var $author$project$Main$Model = F7(
+	function (query, repos, error, stage, material, area, quote) {
+		return {area: area, error: error, material: material, query: query, quote: quote, repos: repos, stage: stage};
 	});
 var $author$project$Main$Small = {$: 'Small'};
-var $author$project$Main$init = _Utils_Tuple2(
-	A6($author$project$Main$Model, 'rails', _List_Nil, $elm$core$Maybe$Nothing, $author$project$Main$ChooseSurface, $author$project$Main$Block, $author$project$Main$Small),
-	$elm$core$Platform$Cmd$none);
+var $author$project$Main$Range = F2(
+	function (start, end) {
+		return {end: end, start: start};
+	});
+var $author$project$Main$calculateQuote = F2(
+	function (materialChoice, areaChoice) {
+		return A2($author$project$Main$Range, 10, 100);
+	});
+var $author$project$Main$ChooseMaterial = {$: 'ChooseMaterial'};
+var $author$project$Main$firstStage = $author$project$Main$ChooseMaterial;
+var $author$project$Main$init = function () {
+	var defaultMaterial = $author$project$Main$Block;
+	var defaultArea = $author$project$Main$Small;
+	var quote = A2($author$project$Main$calculateQuote, defaultMaterial, defaultArea);
+	return _Utils_Tuple2(
+		A7($author$project$Main$Model, 'rails', _List_Nil, $elm$core$Maybe$Nothing, $author$project$Main$firstStage, defaultMaterial, defaultArea, quote),
+		$elm$core$Platform$Cmd$none);
+}();
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (_v0) {
@@ -9958,20 +9972,96 @@ var $author$project$Main$getRepos = function (query) {
 		$author$project$Main$url(query),
 		$author$project$Main$decoder);
 };
-var $author$project$Main$SelectArea = {$: 'SelectArea'};
-var $author$project$Main$nextStage = function (currentStage) {
-	if (currentStage.$ === 'ChooseSurface') {
-		return $author$project$Main$SelectArea;
+var $elm$core$List$drop = F2(
+	function (n, list) {
+		drop:
+		while (true) {
+			if (n <= 0) {
+				return list;
+			} else {
+				if (!list.b) {
+					return list;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs;
+					n = $temp$n;
+					list = $temp$list;
+					continue drop;
+				}
+			}
+		}
+	});
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
 	} else {
-		return $author$project$Main$SelectArea;
+		return $elm$core$Maybe$Nothing;
 	}
 };
+var $elm_community$list_extra$List$Extra$getAt = F2(
+	function (idx, xs) {
+		return (idx < 0) ? $elm$core$Maybe$Nothing : $elm$core$List$head(
+			A2($elm$core$List$drop, idx, xs));
+	});
+var $elm_community$list_extra$List$Extra$findIndexHelp = F3(
+	function (index, predicate, list) {
+		findIndexHelp:
+		while (true) {
+			if (!list.b) {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var x = list.a;
+				var xs = list.b;
+				if (predicate(x)) {
+					return $elm$core$Maybe$Just(index);
+				} else {
+					var $temp$index = index + 1,
+						$temp$predicate = predicate,
+						$temp$list = xs;
+					index = $temp$index;
+					predicate = $temp$predicate;
+					list = $temp$list;
+					continue findIndexHelp;
+				}
+			}
+		}
+	});
+var $elm_community$list_extra$List$Extra$findIndex = $elm_community$list_extra$List$Extra$findIndexHelp(0);
+var $elm_community$list_extra$List$Extra$elemIndex = function (x) {
+	return $elm_community$list_extra$List$Extra$findIndex(
+		$elm$core$Basics$eq(x));
+};
+var $author$project$Main$GetQuote = {$: 'GetQuote'};
+var $author$project$Main$SelectArea = {$: 'SelectArea'};
+var $author$project$Main$orderedStages = _List_fromArray(
+	[$author$project$Main$ChooseMaterial, $author$project$Main$SelectArea, $author$project$Main$GetQuote]);
+var $author$project$Main$indexOfStage = function (currentStage) {
+	return A2(
+		$elm$core$Maybe$withDefault,
+		0,
+		A2($elm_community$list_extra$List$Extra$elemIndex, currentStage, $author$project$Main$orderedStages));
+};
+var $author$project$Main$nextStage = function (currentStage) {
+	return A2(
+		$elm$core$Maybe$withDefault,
+		$author$project$Main$firstStage,
+		A2(
+			$elm_community$list_extra$List$Extra$getAt,
+			$author$project$Main$indexOfStage(currentStage) + 1,
+			$author$project$Main$orderedStages));
+};
 var $author$project$Main$previousStage = function (currentStage) {
-	if (currentStage.$ === 'ChooseSurface') {
-		return $author$project$Main$ChooseSurface;
-	} else {
-		return $author$project$Main$ChooseSurface;
-	}
+	return A2(
+		$elm$core$Maybe$withDefault,
+		$author$project$Main$firstStage,
+		A2(
+			$elm_community$list_extra$List$Extra$getAt,
+			$author$project$Main$indexOfStage(currentStage) - 1,
+			$author$project$Main$orderedStages));
 };
 var $author$project$Main$update = F2(
 	function (msg, model) {
@@ -9979,18 +10069,27 @@ var $author$project$Main$update = F2(
 			case 'ChangeTo':
 				var stage = msg.a;
 				var choice = msg.b;
-				if (stage.$ === 'ChooseSurface') {
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{material: choice}),
-						$elm$core$Platform$Cmd$none);
-				} else {
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{area: choice}),
-						$elm$core$Platform$Cmd$none);
+				switch (stage.$) {
+					case 'ChooseMaterial':
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{material: choice}),
+							$elm$core$Platform$Cmd$none);
+					case 'SelectArea':
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{area: choice}),
+							$elm$core$Platform$Cmd$none);
+					default:
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{
+									quote: A2($author$project$Main$calculateQuote, model.material, model.area)
+								}),
+							$elm$core$Platform$Cmd$none);
 				}
 			case 'NextStage':
 				return _Utils_Tuple2(
@@ -10096,28 +10195,15 @@ var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
 var $author$project$Main$stageCompleteOrActive = F2(
 	function (currentStage, stage) {
-		var _v0 = _Utils_Tuple2(currentStage, stage);
-		if (_v0.a.$ === 'ChooseSurface') {
-			if (_v0.b.$ === 'ChooseSurface') {
-				var _v1 = _v0.a;
-				var _v2 = _v0.b;
-				return true;
-			} else {
-				var _v3 = _v0.a;
-				var _v4 = _v0.b;
-				return false;
-			}
-		} else {
-			if (_v0.b.$ === 'ChooseSurface') {
-				var _v5 = _v0.a;
-				var _v6 = _v0.b;
-				return true;
-			} else {
-				var _v7 = _v0.a;
-				var _v8 = _v0.b;
-				return true;
-			}
-		}
+		var stageIndex = A2(
+			$elm$core$Maybe$withDefault,
+			0,
+			A2($elm_community$list_extra$List$Extra$elemIndex, stage, $author$project$Main$orderedStages));
+		var currentStageIndex = A2(
+			$elm$core$Maybe$withDefault,
+			0,
+			A2($elm_community$list_extra$List$Extra$elemIndex, currentStage, $author$project$Main$orderedStages));
+		return _Utils_cmp(stageIndex, currentStageIndex) < 1;
 	});
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
@@ -10125,7 +10211,7 @@ var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
 var $author$project$Main$renderStep = F2(
 	function (model, stageDescription) {
 		var textClass = A2($author$project$Main$stageCompleteOrActive, model.stage, stageDescription.stage) ? ' text-white ' : ' text-gray-500 ';
-		var progressBar = _Utils_eq(stageDescription.stage, $author$project$Main$ChooseSurface) ? _List_Nil : (A2($author$project$Main$stageCompleteOrActive, model.stage, stageDescription.stage) ? _List_fromArray(
+		var progressBar = _Utils_eq(stageDescription.stage, $author$project$Main$ChooseMaterial) ? _List_Nil : (A2($author$project$Main$stageCompleteOrActive, model.stage, stageDescription.stage) ? _List_fromArray(
 			[
 				A2(
 				$elm$html$Html$div,
@@ -10273,8 +10359,8 @@ var $author$project$Main$stageDescriptions = _List_fromArray(
 	[
 		A4(
 		$author$project$Main$StageDescription,
-		$author$project$Main$ChooseSurface,
-		'Choose Surface',
+		$author$project$Main$ChooseMaterial,
+		'Choose Material',
 		_List_fromArray(
 			[$author$project$Main$Block, $author$project$Main$Resin, $author$project$Main$Concrete, $author$project$Main$Tarmac]),
 		0),
@@ -10284,7 +10370,8 @@ var $author$project$Main$stageDescriptions = _List_fromArray(
 		'Select Area',
 		_List_fromArray(
 			[$author$project$Main$Small, $author$project$Main$Medium, $author$project$Main$Large, $author$project$Main$ExtraLarge]),
-		1)
+		1),
+		A4($author$project$Main$StageDescription, $author$project$Main$GetQuote, 'Get Quote', _List_Nil, 1)
 	]);
 var $author$project$Main$navigation = function (model) {
 	var renderSteps = A2(
@@ -10367,13 +10454,16 @@ var $elm$html$Html$Attributes$src = function (url) {
 };
 var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
-var $author$project$Main$item = F5(
-	function (model, itemStage, choice, subheading, urlString) {
+var $author$project$Main$selection = F5(
+	function (model, selectionStage, choice, subheading, urlString) {
 		var name = function () {
-			if (itemStage.$ === 'ChooseSurface') {
-				return 'material';
-			} else {
-				return 'area';
+			switch (selectionStage.$) {
+				case 'ChooseMaterial':
+					return 'material';
+				case 'SelectArea':
+					return 'area';
+				default:
+					return 'get_quote';
 			}
 		}();
 		var heading = function () {
@@ -10397,16 +10487,19 @@ var $author$project$Main$item = F5(
 			}
 		}();
 		var checked = function () {
-			if (itemStage.$ === 'ChooseSurface') {
-				return _Utils_eq(model.material, choice) ? _List_fromArray(
-					[
-						A2($elm$html$Html$Attributes$attribute, 'checked', 'checked')
-					]) : _List_Nil;
-			} else {
-				return _Utils_eq(model.area, choice) ? _List_fromArray(
-					[
-						A2($elm$html$Html$Attributes$attribute, 'checked', 'checked')
-					]) : _List_Nil;
+			switch (selectionStage.$) {
+				case 'ChooseMaterial':
+					return _Utils_eq(model.material, choice) ? _List_fromArray(
+						[
+							A2($elm$html$Html$Attributes$attribute, 'checked', 'checked')
+						]) : _List_Nil;
+				case 'SelectArea':
+					return _Utils_eq(model.area, choice) ? _List_fromArray(
+						[
+							A2($elm$html$Html$Attributes$attribute, 'checked', 'checked')
+						]) : _List_Nil;
+				default:
+					return _List_Nil;
 			}
 		}();
 		return A2(
@@ -10435,7 +10528,7 @@ var $author$project$Main$item = F5(
 										$elm$html$Html$Attributes$class('invisible absolute peer'),
 										$elm$html$Html$Attributes$value(heading),
 										$elm$html$Html$Events$onClick(
-										A2($author$project$Main$ChangeTo, itemStage, choice))
+										A2($author$project$Main$ChangeTo, selectionStage, choice))
 									]),
 								checked),
 							_List_Nil),
@@ -10483,8 +10576,8 @@ var $author$project$Main$item = F5(
 						]))
 				]));
 	});
-var $author$project$Main$renderChooseSurface = function (model) {
-	var visibleClass = _Utils_eq(model.stage, $author$project$Main$ChooseSurface) ? '' : 'hidden';
+var $author$project$Main$renderChooseMaterial = function (model) {
+	var visibleClass = _Utils_eq(model.stage, $author$project$Main$ChooseMaterial) ? '' : 'hidden';
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -10493,10 +10586,32 @@ var $author$project$Main$renderChooseSurface = function (model) {
 			]),
 		_List_fromArray(
 			[
-				A5($author$project$Main$item, model, $author$project$Main$ChooseSurface, $author$project$Main$Block, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-				A5($author$project$Main$item, model, $author$project$Main$ChooseSurface, $author$project$Main$Resin, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-				A5($author$project$Main$item, model, $author$project$Main$ChooseSurface, $author$project$Main$Concrete, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-				A5($author$project$Main$item, model, $author$project$Main$ChooseSurface, $author$project$Main$Tarmac, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200')
+				A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Block, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
+				A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Resin, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
+				A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Concrete, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
+				A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Tarmac, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200')
+			]));
+};
+var $author$project$Main$renderGetQuote = function (model) {
+	var visibleClass = _Utils_eq(model.stage, $author$project$Main$GetQuote) ? '' : 'hidden';
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('flex flex-wrap ' + visibleClass)
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('w-full md:w-1/4 p-2')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Area')
+					]))
 			]));
 };
 var $author$project$Main$renderSelectArea = function (model) {
@@ -10509,10 +10624,10 @@ var $author$project$Main$renderSelectArea = function (model) {
 			]),
 		_List_fromArray(
 			[
-				A5($author$project$Main$item, model, $author$project$Main$SelectArea, $author$project$Main$Small, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-				A5($author$project$Main$item, model, $author$project$Main$SelectArea, $author$project$Main$Medium, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-				A5($author$project$Main$item, model, $author$project$Main$SelectArea, $author$project$Main$Large, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-				A5($author$project$Main$item, model, $author$project$Main$SelectArea, $author$project$Main$ExtraLarge, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200')
+				A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Small, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
+				A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Medium, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
+				A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Large, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
+				A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$ExtraLarge, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200')
 			]));
 };
 var $elm$core$Debug$toString = _Debug_toString;
@@ -10523,8 +10638,9 @@ var $author$project$Main$view = function (model) {
 		_List_fromArray(
 			[
 				$author$project$Main$navigation(model),
-				$author$project$Main$renderChooseSurface(model),
+				$author$project$Main$renderChooseMaterial(model),
 				$author$project$Main$renderSelectArea(model),
+				$author$project$Main$renderGetQuote(model),
 				$author$project$Main$actions(model),
 				A2(
 				$elm$html$Html$div,
@@ -10588,4 +10704,4 @@ var $author$project$Main$main = $elm$browser$Browser$element(
 		view: $author$project$Main$view
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main(
-	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Main.Repo":{"args":[],"type":"{ id : Basics.Int, full_name : String.String }"},"Http.Response":{"args":["body"],"type":"{ url : String.String, status : { code : Basics.Int, message : String.String }, headers : Dict.Dict String.String String.String, body : body }"}},"unions":{"Main.Msg":{"args":[],"tags":{"UpdateQuery":["String.String"],"Search":[],"LoadRepos":["Result.Result Http.Error (List.List Main.Repo)"],"NextStage":[],"PreviousStage":[],"ChangeTo":["Main.Stage","Main.Choice"]}},"Main.Choice":{"args":[],"tags":{"Block":[],"Resin":[],"Concrete":[],"Tarmac":[],"Small":[],"Medium":[],"Large":[],"ExtraLarge":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Http.Response String.String"],"BadPayload":["String.String","Http.Response String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"List.List":{"args":["a"],"tags":{}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.Stage":{"args":[],"tags":{"ChooseSurface":[],"SelectArea":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":[]}},"Dict.NColor":{"args":[],"tags":{"Red":[],"Black":[]}}}}})}});}(this));
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Main.Repo":{"args":[],"type":"{ id : Basics.Int, full_name : String.String }"},"Http.Response":{"args":["body"],"type":"{ url : String.String, status : { code : Basics.Int, message : String.String }, headers : Dict.Dict String.String String.String, body : body }"}},"unions":{"Main.Msg":{"args":[],"tags":{"UpdateQuery":["String.String"],"Search":[],"LoadRepos":["Result.Result Http.Error (List.List Main.Repo)"],"NextStage":[],"PreviousStage":[],"ChangeTo":["Main.Stage","Main.Choice"]}},"Main.Choice":{"args":[],"tags":{"Block":[],"Resin":[],"Concrete":[],"Tarmac":[],"Small":[],"Medium":[],"Large":[],"ExtraLarge":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Http.Response String.String"],"BadPayload":["String.String","Http.Response String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"List.List":{"args":["a"],"tags":{}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.Stage":{"args":[],"tags":{"ChooseMaterial":[],"SelectArea":[],"GetQuote":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":[]}},"Dict.NColor":{"args":[],"tags":{"Red":[],"Black":[]}}}}})}});}(this));
