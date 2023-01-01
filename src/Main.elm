@@ -386,7 +386,8 @@ renderGetQuote model =
         [ Attr.class ("flex flex-wrap " ++ visibleClass)
         ]
         [ form
-            [ Attr.attribute "data-netlify" "true"
+            [ Attr.name "quote"
+            , Attr.method "post"
             , Attr.class "w-full flex flex-wrap"
             ]
             ([ input

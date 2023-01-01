@@ -6617,6 +6617,7 @@ var $author$project$Main$renderChooseMaterial = function (model) {
 var $elm$html$Html$Attributes$for = $elm$html$Html$Attributes$stringProperty('htmlFor');
 var $elm$html$Html$form = _VirtualDom_node('form');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
+var $elm$html$Html$Attributes$method = $elm$html$Html$Attributes$stringProperty('method');
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $elm$json$Json$Encode$bool = _Json_wrap;
 var $elm$html$Html$Attributes$boolProperty = F2(
@@ -6642,7 +6643,8 @@ var $author$project$Main$renderGetQuote = function (model) {
 				$elm$html$Html$form,
 				_List_fromArray(
 					[
-						A2($elm$html$Html$Attributes$attribute, 'data-netlify', 'true'),
+						$elm$html$Html$Attributes$name('quote'),
+						$elm$html$Html$Attributes$method('post'),
 						$elm$html$Html$Attributes$class('w-full flex flex-wrap')
 					]),
 				_Utils_ap(
