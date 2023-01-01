@@ -10140,54 +10140,6 @@ var $author$project$Main$update = F2(
 				}
 		}
 	});
-var $author$project$Main$Search = {$: 'Search'};
-var $author$project$Main$UpdateQuery = function (a) {
-	return {$: 'UpdateQuery', a: a};
-};
-var $author$project$Main$NextStage = {$: 'NextStage'};
-var $author$project$Main$PreviousStage = {$: 'PreviousStage'};
-var $author$project$Main$previousButton = function (_v0) {
-	return _List_fromArray(
-		[
-			A2(
-			$elm$html$Html$a,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('flex-auto w-10 overflow-visible my-4 py-2 px-2 ml-0 mr-2 text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer border-gray-500 bg-gray-500 hover:border-gray-600 hover:bg-gray-600 hover:text-white'),
-					$elm$html$Html$Events$onClick($author$project$Main$PreviousStage)
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Previous')
-				]))
-		]);
-};
-var $author$project$Main$actions = function (model) {
-	var prev = $author$project$Main$previousButton(model.stage);
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('flex flex-wrap')
-			]),
-		_Utils_ap(
-			prev,
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$a,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('flex-auto w-10 flex-overflow-visible my-4 py-2 px-2 ml-2 mr-0 text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white'),
-							$elm$html$Html$Events$onClick($author$project$Main$NextStage)
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Next')
-						]))
-				])));
-};
-var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
 var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
@@ -10360,18 +10312,18 @@ var $author$project$Main$stageDescriptions = _List_fromArray(
 		A4(
 		$author$project$Main$StageDescription,
 		$author$project$Main$ChooseMaterial,
-		'Choose Material',
+		'Material',
 		_List_fromArray(
 			[$author$project$Main$Block, $author$project$Main$Resin, $author$project$Main$Concrete, $author$project$Main$Tarmac]),
 		0),
 		A4(
 		$author$project$Main$StageDescription,
 		$author$project$Main$SelectArea,
-		'Select Area',
+		'Area',
 		_List_fromArray(
 			[$author$project$Main$Small, $author$project$Main$Medium, $author$project$Main$Large, $author$project$Main$ExtraLarge]),
 		1),
-		A4($author$project$Main$StageDescription, $author$project$Main$GetQuote, 'Get Quote', _List_Nil, 1)
+		A4($author$project$Main$StageDescription, $author$project$Main$GetQuote, 'Quote', _List_Nil, 1)
 	]);
 var $author$project$Main$navigation = function (model) {
 	var renderSteps = A2(
@@ -10397,36 +10349,62 @@ var $author$project$Main$navigation = function (model) {
 				renderSteps)
 			]));
 };
-var $elm$html$Html$Events$alwaysStop = function (x) {
-	return _Utils_Tuple2(x, true);
+var $author$project$Main$NextStage = {$: 'NextStage'};
+var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
+var $author$project$Main$nextButton = function (stage) {
+	if (stage.$ === 'GetQuote') {
+		return _List_fromArray(
+			[
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('flex-auto w-10 flex-overflow-visible my-4 py-2 px-2 ml-2 mr-0 text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white'),
+						$elm$html$Html$Attributes$type_('submit')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Send Me The Quote')
+					]))
+			]);
+	} else {
+		return _List_fromArray(
+			[
+				A2(
+				$elm$html$Html$a,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('flex-auto w-10 flex-overflow-visible my-4 py-2 px-2 ml-2 mr-0 text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white'),
+						$elm$html$Html$Events$onClick($author$project$Main$NextStage)
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Next')
+					]))
+			]);
+	}
 };
-var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
-	return {$: 'MayStopPropagation', a: a};
+var $author$project$Main$PreviousStage = {$: 'PreviousStage'};
+var $author$project$Main$previousButton = function (_v0) {
+	return _List_fromArray(
+		[
+			A2(
+			$elm$html$Html$a,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('flex-auto w-10 overflow-visible my-4 py-2 px-2 ml-0 mr-2 text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer border-gray-500 bg-gray-500 hover:border-gray-600 hover:bg-gray-600 hover:text-white'),
+					$elm$html$Html$Events$onClick($author$project$Main$PreviousStage)
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('Previous')
+				]))
+		]);
 };
-var $elm$html$Html$Events$stopPropagationOn = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
-	});
-var $elm$json$Json$Decode$at = F2(
-	function (fields, decoder) {
-		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
-	});
-var $elm$html$Html$Events$targetValue = A2(
-	$elm$json$Json$Decode$at,
-	_List_fromArray(
-		['target', 'value']),
-	$elm$json$Json$Decode$string);
-var $elm$html$Html$Events$onInput = function (tagger) {
-	return A2(
-		$elm$html$Html$Events$stopPropagationOn,
-		'input',
-		A2(
-			$elm$json$Json$Decode$map,
-			$elm$html$Html$Events$alwaysStop,
-			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
+var $author$project$Main$actions = function (model) {
+	return _Utils_ap(
+		$author$project$Main$previousButton(model.stage),
+		$author$project$Main$nextButton(model.stage));
 };
 var $author$project$Main$ChangeTo = F2(
 	function (a, b) {
@@ -10444,6 +10422,7 @@ var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$html$Html$h3 = _VirtualDom_node('h3');
 var $elm$html$Html$img = _VirtualDom_node('img');
+var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$html$Html$label = _VirtualDom_node('label');
 var $elm$html$Html$Attributes$name = $elm$html$Html$Attributes$stringProperty('name');
 var $elm$html$Html$Attributes$src = function (url) {
@@ -10452,7 +10431,6 @@ var $elm$html$Html$Attributes$src = function (url) {
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
-var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Main$selection = F5(
 	function (model, selectionStage, choice, subheading, urlString) {
@@ -10584,14 +10562,34 @@ var $author$project$Main$renderChooseMaterial = function (model) {
 			[
 				$elm$html$Html$Attributes$class('flex flex-wrap ' + visibleClass)
 			]),
-		_List_fromArray(
-			[
-				A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Block, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-				A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Resin, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-				A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Concrete, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-				A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Tarmac, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200')
-			]));
+		_Utils_ap(
+			_List_fromArray(
+				[
+					A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Block, '', '/assets/img/block-driveway.png'),
+					A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Resin, '', '/assets/img/resin-driveway.png'),
+					A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Concrete, '', '/assets/img/concrete-driveway.png'),
+					A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Tarmac, '', '/assets/img/tarmac-driveway.png')
+				]),
+			$author$project$Main$actions(model)));
 };
+var $elm$html$Html$Attributes$action = function (uri) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'action',
+		_VirtualDom_noJavaScriptUri(uri));
+};
+var $elm$html$Html$Attributes$for = $elm$html$Html$Attributes$stringProperty('htmlFor');
+var $elm$html$Html$form = _VirtualDom_node('form');
+var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
+var $elm$json$Json$Encode$bool = _Json_wrap;
+var $elm$html$Html$Attributes$boolProperty = F2(
+	function (key, bool) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$bool(bool));
+	});
+var $elm$html$Html$Attributes$required = $elm$html$Html$Attributes$boolProperty('required');
 var $author$project$Main$renderGetQuote = function (model) {
 	var visibleClass = _Utils_eq(model.stage, $author$project$Main$GetQuote) ? '' : 'hidden';
 	return A2(
@@ -10603,15 +10601,146 @@ var $author$project$Main$renderGetQuote = function (model) {
 		_List_fromArray(
 			[
 				A2(
-				$elm$html$Html$div,
+				$elm$html$Html$form,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('w-full md:w-1/4 p-2')
+						$elm$html$Html$Attributes$name('quote'),
+						A2($elm$html$Html$Attributes$attribute, 'data-netlify', 'true'),
+						$elm$html$Html$Attributes$action('/thank-you'),
+						$elm$html$Html$Attributes$class('w-full flex flex-wrap')
 					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Area')
-					]))
+				_Utils_ap(
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('flex flex-wrap mb-4 w-full')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$label,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$for('name'),
+											$elm$html$Html$Attributes$class('inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Name')
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$input,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$type_('text'),
+													$elm$html$Html$Attributes$id('name'),
+													$elm$html$Html$Attributes$class('block overflow-visible py-2 px-4 m-0 w-full h-10 text-base leading-normal bg-clip-padding rounded border border-gray-300 border-solid cursor-text text-slate-800 focus:border-sky-300 focus:bg-white focus:text-slate-800'),
+													$elm$html$Html$Attributes$placeholder('Your Name'),
+													$elm$html$Html$Attributes$name('name'),
+													$elm$html$Html$Attributes$required(true),
+													A2($elm$html$Html$Attributes$attribute, 'autocomplete', 'name'),
+													A2($elm$html$Html$Attributes$attribute, 'data-form-type', 'name')
+												]),
+											_List_Nil)
+										]))
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('flex flex-wrap mb-4 w-full')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$label,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$for('email'),
+											$elm$html$Html$Attributes$class('inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Email')
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$input,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$type_('email'),
+													$elm$html$Html$Attributes$id('email'),
+													$elm$html$Html$Attributes$class('block overflow-visible py-1 px-4 m-0 w-full h-10 text-base leading-normal bg-clip-padding rounded border border-gray-300 border-solid cursor-text text-slate-800 focus:border-sky-300 focus:bg-white focus:text-slate-800'),
+													$elm$html$Html$Attributes$placeholder('name@example.com'),
+													$elm$html$Html$Attributes$name('email'),
+													$elm$html$Html$Attributes$required(true),
+													A2($elm$html$Html$Attributes$attribute, 'autocomplete', 'email')
+												]),
+											_List_Nil)
+										]))
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('flex flex-wrap mb-4 w-full')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$label,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$for('phone'),
+											$elm$html$Html$Attributes$class('inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Phone')
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$input,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$type_('tel'),
+													$elm$html$Html$Attributes$id('phone'),
+													$elm$html$Html$Attributes$class('block overflow-visible py-1 px-4 m-0 w-full h-10 text-base leading-normal bg-clip-padding rounded border border-gray-300 border-solid cursor-text text-slate-800 focus:border-sky-300 focus:bg-white focus:text-slate-800'),
+													$elm$html$Html$Attributes$placeholder(''),
+													$elm$html$Html$Attributes$name('phone'),
+													$elm$html$Html$Attributes$required(true),
+													A2($elm$html$Html$Attributes$attribute, 'autocomplete', 'tel')
+												]),
+											_List_Nil)
+										]))
+								]))
+						]),
+					$author$project$Main$actions(model)))
 			]));
 };
 var $author$project$Main$renderSelectArea = function (model) {
@@ -10622,15 +10751,16 @@ var $author$project$Main$renderSelectArea = function (model) {
 			[
 				$elm$html$Html$Attributes$class('flex flex-wrap ' + visibleClass)
 			]),
-		_List_fromArray(
-			[
-				A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Small, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-				A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Medium, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-				A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Large, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-				A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$ExtraLarge, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200')
-			]));
+		_Utils_ap(
+			_List_fromArray(
+				[
+					A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Small, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
+					A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Medium, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
+					A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Large, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
+					A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$ExtraLarge, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200')
+				]),
+			$author$project$Main$actions(model)));
 };
-var $elm$core$Debug$toString = _Debug_toString;
 var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -10640,58 +10770,7 @@ var $author$project$Main$view = function (model) {
 				$author$project$Main$navigation(model),
 				$author$project$Main$renderChooseMaterial(model),
 				$author$project$Main$renderSelectArea(model),
-				$author$project$Main$renderGetQuote(model),
-				$author$project$Main$actions(model),
-				A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$input,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onInput($author$project$Main$UpdateQuery),
-								$elm$html$Html$Attributes$value(model.query)
-							]),
-						_List_Nil),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onClick($author$project$Main$Search)
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Search')
-							])),
-						A2(
-						$elm$html$Html$div,
-						_List_Nil,
-						A2(
-							$elm$core$List$map,
-							function (_v0) {
-								var full_name = _v0.full_name;
-								return A2(
-									$elm$html$Html$p,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text(full_name)
-										]));
-							},
-							model.repos)),
-						$elm$html$Html$text(
-						function () {
-							var _v1 = model.error;
-							if (_v1.$ === 'Nothing') {
-								return '';
-							} else {
-								var error = _v1.a;
-								return 'Error: ' + $elm$core$Debug$toString(error);
-							}
-						}())
-					]))
+				$author$project$Main$renderGetQuote(model)
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(

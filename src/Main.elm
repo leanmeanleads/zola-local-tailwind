@@ -44,9 +44,9 @@ type alias StageDescription =
 
 stageDescriptions : List StageDescription
 stageDescriptions =
-    [ StageDescription ChooseMaterial "Choose Material" [ Block, Resin, Concrete, Tarmac ] 0
-    , StageDescription SelectArea "Select Area" [ Small, Medium, Large, ExtraLarge ] 1
-    , StageDescription GetQuote "Get Quote" [] 1
+    [ StageDescription ChooseMaterial "Material" [ Block, Resin, Concrete, Tarmac ] 0
+    , StageDescription SelectArea "Area" [ Small, Medium, Large, ExtraLarge ] 1
+    , StageDescription GetQuote "Quote" [] 1
     ]
 
 
@@ -326,11 +326,13 @@ renderChooseMaterial model =
     div
         [ Attr.class ("flex flex-wrap " ++ visibleClass)
         ]
-        [ selection model ChooseMaterial Block "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-        , selection model ChooseMaterial Resin "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-        , selection model ChooseMaterial Concrete "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-        , selection model ChooseMaterial Tarmac "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-        ]
+        ([ selection model ChooseMaterial Block "" "/assets/img/block-driveway.png"
+         , selection model ChooseMaterial Resin "" "/assets/img/resin-driveway.png"
+         , selection model ChooseMaterial Concrete "" "/assets/img/concrete-driveway.png"
+         , selection model ChooseMaterial Tarmac "" "/assets/img/tarmac-driveway.png"
+         ]
+            ++ actions model
+        )
 
 
 renderGetQuote : Model -> Html Msg
@@ -346,10 +348,85 @@ renderGetQuote model =
     div
         [ Attr.class ("flex flex-wrap " ++ visibleClass)
         ]
-        [ div
-            [ Attr.class "w-full md:w-1/4 p-2"
+        [ form
+            [ Attr.name "quote"
+            , Attr.attribute "data-netlify" "true"
+            , Attr.action "/thank-you"
+            , Attr.class "w-full flex flex-wrap"
             ]
-            [ text "Area" ]
+            ([ div
+                [ Attr.class "flex flex-wrap mb-4 w-full"
+                ]
+                [ label
+                    [ Attr.for "name"
+                    , Attr.class "inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800"
+                    ]
+                    [ text "Name" ]
+                , div
+                    [ Attr.class "relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5"
+                    ]
+                    [ input
+                        [ Attr.type_ "text"
+                        , Attr.id "name"
+                        , Attr.class "block overflow-visible py-2 px-4 m-0 w-full h-10 text-base leading-normal bg-clip-padding rounded border border-gray-300 border-solid cursor-text text-slate-800 focus:border-sky-300 focus:bg-white focus:text-slate-800"
+                        , Attr.placeholder "Your Name"
+                        , Attr.name "name"
+                        , Attr.required True
+                        , Attr.attribute "autocomplete" "name"
+                        , Attr.attribute "data-form-type" "name"
+                        ]
+                        []
+                    ]
+                ]
+             , div
+                [ Attr.class "flex flex-wrap mb-4 w-full"
+                ]
+                [ label
+                    [ Attr.for "email"
+                    , Attr.class "inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800"
+                    ]
+                    [ text "Email" ]
+                , div
+                    [ Attr.class "relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5"
+                    ]
+                    [ input
+                        [ Attr.type_ "email"
+                        , Attr.id "email"
+                        , Attr.class "block overflow-visible py-1 px-4 m-0 w-full h-10 text-base leading-normal bg-clip-padding rounded border border-gray-300 border-solid cursor-text text-slate-800 focus:border-sky-300 focus:bg-white focus:text-slate-800"
+                        , Attr.placeholder "name@example.com"
+                        , Attr.name "email"
+                        , Attr.required True
+                        , Attr.attribute "autocomplete" "email"
+                        ]
+                        []
+                    ]
+                ]
+             , div
+                [ Attr.class "flex flex-wrap mb-4 w-full"
+                ]
+                [ label
+                    [ Attr.for "phone"
+                    , Attr.class "inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800"
+                    ]
+                    [ text "Phone" ]
+                , div
+                    [ Attr.class "relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5"
+                    ]
+                    [ input
+                        [ Attr.type_ "tel"
+                        , Attr.id "phone"
+                        , Attr.class "block overflow-visible py-1 px-4 m-0 w-full h-10 text-base leading-normal bg-clip-padding rounded border border-gray-300 border-solid cursor-text text-slate-800 focus:border-sky-300 focus:bg-white focus:text-slate-800"
+                        , Attr.placeholder ""
+                        , Attr.name "phone"
+                        , Attr.required True
+                        , Attr.attribute "autocomplete" "tel"
+                        ]
+                        []
+                    ]
+                ]
+             ]
+                ++ actions model
+            )
         ]
 
 
@@ -366,11 +443,13 @@ renderSelectArea model =
     div
         [ Attr.class ("flex flex-wrap " ++ visibleClass)
         ]
-        [ selection model SelectArea Small "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-        , selection model SelectArea Medium "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-        , selection model SelectArea Large "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-        , selection model SelectArea ExtraLarge "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-        ]
+        ([ selection model SelectArea Small "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+         , selection model SelectArea Medium "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+         , selection model SelectArea Large "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+         , selection model SelectArea ExtraLarge "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+         ]
+            ++ actions model
+        )
 
 
 selection : Model -> Stage -> Choice -> String -> String -> Html Msg
@@ -483,23 +562,29 @@ previousButton _ =
     ]
 
 
-actions : Model -> Html Msg
+nextButton : Stage -> List (Html Msg)
+nextButton stage =
+    case stage of
+        GetQuote ->
+            [ button
+                [ Attr.class "flex-auto w-10 flex-overflow-visible my-4 py-2 px-2 ml-2 mr-0 text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white"
+                , Attr.type_ "submit"
+                ]
+                [ text "Send Me The Quote" ]
+            ]
+
+        _ ->
+            [ a
+                [ Attr.class "flex-auto w-10 flex-overflow-visible my-4 py-2 px-2 ml-2 mr-0 text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white"
+                , onClick NextStage
+                ]
+                [ text "Next" ]
+            ]
+
+
+actions : Model -> List (Html Msg)
 actions model =
-    let
-        prev =
-            previousButton model.stage
-    in
-    div
-        [ Attr.class "flex flex-wrap"
-        ]
-        (prev
-            ++ [ a
-                    [ Attr.class "flex-auto w-10 flex-overflow-visible my-4 py-2 px-2 ml-2 mr-0 text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white"
-                    , onClick NextStage
-                    ]
-                    [ text "Next" ]
-               ]
-        )
+    previousButton model.stage ++ nextButton model.stage
 
 
 view : Model -> Html Msg
@@ -509,22 +594,4 @@ view model =
         , renderChooseMaterial model
         , renderSelectArea model
         , renderGetQuote model
-        , actions model
-        , div []
-            [ input
-                [ onInput UpdateQuery, value model.query ]
-                []
-            , button [ onClick Search ] [ text "Search" ]
-            , div
-                []
-                (List.map (\{ full_name } -> p [] [ text full_name ]) model.repos)
-            , text
-                (case model.error of
-                    Nothing ->
-                        ""
-
-                    Just error ->
-                        "Error: " ++ Debug.toString error
-                )
-            ]
         ]

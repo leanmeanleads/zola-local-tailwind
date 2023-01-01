@@ -14,9 +14,10 @@
             {{ heading }}
           </h2>
 
+          {% if config.extra.use_quote_calculator %}
           <div id="myapp">
           </div>
-
+          {% else %}
           <form name="quote"
                 data-netlify="true"
                 action="/thank-you">
@@ -76,13 +77,9 @@
                       type="submit">{{ submit_cta }}</button>
             </div>
           </form>
-
-
+          {% endif %}
         </div>
       </div>
     </div>
   </div>
 </section>
-
-
-
