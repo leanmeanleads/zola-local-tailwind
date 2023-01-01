@@ -10479,28 +10479,85 @@ var $elm$html$Html$Attributes$src = function (url) {
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
-var $author$project$Main$selection = F5(
-	function (model, selectionStage, choice, subheading, urlString) {
+var $author$project$Main$selection = F4(
+	function (model, selectionStage, choice, urlString) {
 		var subheadingElement = F2(
-			function (subheadingText, currentStage) {
-				if (currentStage.$ === 'ChooseMaterial') {
-					return _List_Nil;
-				} else {
-					return _List_fromArray(
-						[
-							A2(
-							$elm$html$Html$h3,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('text-sm'),
-									A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-11-1')
-								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text(subheadingText)
-								]))
-						]);
+			function (currentStage, elementChoice) {
+				var squared = _List_fromArray(
+					[
+						A3(
+						$elm$html$Html$node,
+						'sup',
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('2')
+							]))
+					]);
+				var _v5 = _Utils_Tuple2(currentStage, elementChoice);
+				_v5$3:
+				while (true) {
+					if (_v5.a.$ === 'SelectArea') {
+						switch (_v5.b.$) {
+							case 'Small':
+								var _v6 = _v5.a;
+								var _v7 = _v5.b;
+								return _List_fromArray(
+									[
+										A2(
+										$elm$html$Html$h3,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('text-sm'),
+												A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-11-1')
+											]),
+										A2(
+											$elm$core$List$cons,
+											$elm$html$Html$text('10 - 40m'),
+											squared))
+									]);
+							case 'Medium':
+								var _v8 = _v5.a;
+								var _v9 = _v5.b;
+								return _List_fromArray(
+									[
+										A2(
+										$elm$html$Html$h3,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('text-sm'),
+												A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-11-1')
+											]),
+										A2(
+											$elm$core$List$cons,
+											$elm$html$Html$text('40 - 70m'),
+											squared))
+									]);
+							case 'Large':
+								var _v10 = _v5.a;
+								var _v11 = _v5.b;
+								return _List_fromArray(
+									[
+										A2(
+										$elm$html$Html$h3,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('text-sm'),
+												A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-11-1')
+											]),
+										A2(
+											$elm$core$List$cons,
+											$elm$html$Html$text('70 - 120m'),
+											squared))
+									]);
+							default:
+								break _v5$3;
+						}
+					} else {
+						break _v5$3;
+					}
 				}
+				return _List_Nil;
 			});
 		var name = function () {
 			switch (selectionStage.$) {
@@ -10630,7 +10687,7 @@ var $author$project$Main$selection = F5(
 												$elm$html$Html$text(heading)
 											]))
 									]),
-								A2(subheadingElement, subheading, selectionStage)))
+								A2(subheadingElement, selectionStage, choice)))
 						]))
 				]));
 	});
@@ -10645,10 +10702,10 @@ var $author$project$Main$renderChooseMaterial = function (model) {
 		_Utils_ap(
 			_List_fromArray(
 				[
-					A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Block, '', '/assets/img/block-driveway.png'),
-					A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Resin, '', '/assets/img/resin-driveway.png'),
-					A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Concrete, '', '/assets/img/concrete-driveway.png'),
-					A5($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Tarmac, '', '/assets/img/tarmac-driveway.png')
+					A4($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Block, '/assets/img/block-driveway.png'),
+					A4($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Resin, '/assets/img/resin-driveway.png'),
+					A4($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Concrete, '/assets/img/concrete-driveway.png'),
+					A4($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Tarmac, '/assets/img/tarmac-driveway.png')
 				]),
 			$author$project$Main$actions(model)));
 };
@@ -10893,9 +10950,9 @@ var $author$project$Main$renderSelectArea = function (model) {
 		_Utils_ap(
 			_List_fromArray(
 				[
-					A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Small, '10-40m2', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-					A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Medium, '40-70m2', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-					A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Large, '70-120m2', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200')
+					A4($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Small, ''),
+					A4($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Medium, ''),
+					A4($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Large, '')
 				]),
 			$author$project$Main$actions(model)));
 };

@@ -344,10 +344,10 @@ renderChooseMaterial model =
     div
         [ Attr.class ("flex flex-wrap " ++ visibleClass)
         ]
-        ([ selection model ChooseMaterial Block "" "/assets/img/block-driveway.png"
-         , selection model ChooseMaterial Resin "" "/assets/img/resin-driveway.png"
-         , selection model ChooseMaterial Concrete "" "/assets/img/concrete-driveway.png"
-         , selection model ChooseMaterial Tarmac "" "/assets/img/tarmac-driveway.png"
+        ([ selection model ChooseMaterial Block "/assets/img/block-driveway.png"
+         , selection model ChooseMaterial Resin "/assets/img/resin-driveway.png"
+         , selection model ChooseMaterial Concrete "/assets/img/concrete-driveway.png"
+         , selection model ChooseMaterial Tarmac "/assets/img/tarmac-driveway.png"
          ]
             ++ actions model
         )
@@ -484,16 +484,16 @@ renderSelectArea model =
     div
         [ Attr.class ("flex flex-wrap " ++ visibleClass)
         ]
-        ([ selection model SelectArea Small "10-40m2" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-         , selection model SelectArea Medium "40-70m2" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-         , selection model SelectArea Large "70-120m2" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+        ([ selection model SelectArea Small ""
+         , selection model SelectArea Medium ""
+         , selection model SelectArea Large ""
          ]
             ++ actions model
         )
 
 
-selection : Model -> Stage -> Choice -> String -> String -> Html Msg
-selection model selectionStage choice subheading urlString =
+selection : Model -> Stage -> Choice -> String -> Html Msg
+selection model selectionStage choice urlString =
     let
         checked =
             case selectionStage of
@@ -560,19 +560,39 @@ selection model selectionStage choice subheading urlString =
                 _ ->
                     ""
 
-        subheadingElement : String -> Stage -> List (Html Msg)
-        subheadingElement subheadingText currentStage =
-            case currentStage of
-                ChooseMaterial ->
-                    []
-
-                _ ->
+        subheadingElement : Stage -> Choice -> List (Html Msg)
+        subheadingElement currentStage elementChoice =
+            let
+                squared =
+                    [ node "sup" [] [ text "2" ] ]
+            in
+            case ( currentStage, elementChoice ) of
+                ( SelectArea, Small ) ->
                     [ h3
                         [ Attr.class "text-sm"
                         , Attr.attribute "data-config-id" "auto-txt-11-1"
                         ]
-                        [ text subheadingText ]
+                        (text "10 - 40m" :: squared)
                     ]
+
+                ( SelectArea, Medium ) ->
+                    [ h3
+                        [ Attr.class "text-sm"
+                        , Attr.attribute "data-config-id" "auto-txt-11-1"
+                        ]
+                        (text "40 - 70m" :: squared)
+                    ]
+
+                ( SelectArea, Large ) ->
+                    [ h3
+                        [ Attr.class "text-sm"
+                        , Attr.attribute "data-config-id" "auto-txt-11-1"
+                        ]
+                        (text "70 - 120m" :: squared)
+                    ]
+
+                _ ->
+                    []
 
         imageClasses : String
         imageClasses =
@@ -618,7 +638,7 @@ selection model selectionStage choice subheading urlString =
                     ]
                     [ text heading ]
                  ]
-                    ++ subheadingElement subheading selectionStage
+                    ++ subheadingElement selectionStage choice
                 )
             ]
         ]
