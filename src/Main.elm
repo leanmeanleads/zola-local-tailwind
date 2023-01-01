@@ -1,10 +1,9 @@
 module Main exposing (Model, Msg(..), Repo, decoder, getRepos, init, main, repoDecoder, sendGet, subscriptions, update, url, view)
 
 import Browser
-import Debug
 import Html as Html exposing (..)
 import Html.Attributes as Attr exposing (value)
-import Html.Events exposing (onClick, onInput)
+import Html.Events exposing (on, onClick)
 import Http exposing (Error(..))
 import Json.Decode exposing (Decoder, field, int, string)
 import List.Extra as ListExtra
@@ -45,7 +44,7 @@ type alias StageDescription =
 stageDescriptions : List StageDescription
 stageDescriptions =
     [ StageDescription ChooseMaterial "Material" [ Block, Resin, Concrete, Tarmac ] 0
-    , StageDescription SelectArea "Area" [ Small, Medium, Large, ExtraLarge ] 1
+    , StageDescription SelectArea "Area" [ Small, Medium, Large ] 1
     , StageDescription GetQuote "Quote" [] 1
     ]
 
@@ -58,7 +57,6 @@ type Choice
     | Small
     | Medium
     | Large
-    | ExtraLarge
 
 
 type Stage
@@ -150,7 +148,27 @@ type alias Range =
 
 calculateQuote : Choice -> Choice -> Range
 calculateQuote materialChoice areaChoice =
-    Range 10 100
+    case ( materialChoice, areaChoice ) of
+        ( Tarmac, Small ) ->
+            Range 1200 1800
+
+        ( Tarmac, Medium ) ->
+            Range 2400 3600
+
+        ( Tarmac, Large ) ->
+            Range 2700 5400
+
+        ( Concrete, Small ) ->
+            Range 2700 4800
+
+        ( Concrete, Medium ) ->
+            Range 5000 9500
+
+        ( Concrete, Large ) ->
+            Range 8000 14000
+
+        _ ->
+            Range 1100 2000
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -159,10 +177,10 @@ update msg model =
         ChangeTo stage choice ->
             case stage of
                 ChooseMaterial ->
-                    ( { model | material = choice }, Cmd.none )
+                    ( { model | material = choice, quote = calculateQuote choice model.area }, Cmd.none )
 
                 SelectArea ->
-                    ( { model | area = choice }, Cmd.none )
+                    ( { model | area = choice, quote = calculateQuote model.material choice }, Cmd.none )
 
                 GetQuote ->
                     ( { model | quote = calculateQuote model.material model.area }, Cmd.none )
@@ -344,6 +362,9 @@ renderGetQuote model =
 
             else
                 "hidden"
+
+        quoteAsString =
+            "£" ++ String.fromInt model.quote.start ++ " - £" ++ String.fromInt model.quote.end
     in
     div
         [ Attr.class ("flex flex-wrap " ++ visibleClass)
@@ -355,6 +376,26 @@ renderGetQuote model =
             , Attr.class "w-full flex flex-wrap"
             ]
             ([ div
+                [ Attr.class "flex flex-wrap mb-3 w-full"
+                ]
+                [ div
+                    [ Attr.class "flex-auto w-1/5 text-left pr-4 text-xl font-semibold pl-3" ]
+                    [ text "Total" ]
+                , div
+                    [ Attr.class "flex-auto w-4/5 text-left text-xl font-bold pl-6" ]
+                    [ text quoteAsString ]
+                ]
+             , div
+                [ Attr.class "flex flex-wrap mb-6 w-full"
+                ]
+                [ div
+                    [ Attr.class "flex-auto w-1/5 text-left pr-4 text-xl font-semibold pl-3" ]
+                    [ text "" ]
+                , div
+                    [ Attr.class "flex-auto w-4/5 text-left pl-6" ]
+                    [ text "Enter your contact details below for a more detailed quote." ]
+                ]
+             , div
                 [ Attr.class "flex flex-wrap mb-4 w-full"
                 ]
                 [ label
@@ -443,10 +484,9 @@ renderSelectArea model =
     div
         [ Attr.class ("flex flex-wrap " ++ visibleClass)
         ]
-        ([ selection model SelectArea Small "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-         , selection model SelectArea Medium "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-         , selection model SelectArea Large "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
-         , selection model SelectArea ExtraLarge "" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+        ([ selection model SelectArea Small "10-40m2" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+         , selection model SelectArea Medium "40-70m2" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
+         , selection model SelectArea Large "70-120m2" "https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200"
          ]
             ++ actions model
         )
@@ -477,7 +517,7 @@ selection model selectionStage choice subheading urlString =
         heading =
             case choice of
                 Block ->
-                    "Block"
+                    "Block Paving"
 
                 Resin ->
                     "Resin"
@@ -497,9 +537,6 @@ selection model selectionStage choice subheading urlString =
                 Large ->
                     "Large"
 
-                ExtraLarge ->
-                    "Extra Large"
-
         name =
             case selectionStage of
                 ChooseMaterial ->
@@ -510,9 +547,47 @@ selection model selectionStage choice subheading urlString =
 
                 GetQuote ->
                     "get_quote"
+
+        containerClasses : String
+        containerClasses =
+            case selectionStage of
+                ChooseMaterial ->
+                    "w-1/2 md:w-1/4 p-2"
+
+                SelectArea ->
+                    "w-full md:w-1/3 p-2"
+
+                _ ->
+                    ""
+
+        subheadingElement : String -> Stage -> List (Html Msg)
+        subheadingElement subheadingText currentStage =
+            case currentStage of
+                ChooseMaterial ->
+                    []
+
+                _ ->
+                    [ h3
+                        [ Attr.class "text-sm"
+                        , Attr.attribute "data-config-id" "auto-txt-11-1"
+                        ]
+                        [ text subheadingText ]
+                    ]
+
+        imageClasses : String
+        imageClasses =
+            case selectionStage of
+                ChooseMaterial ->
+                    "mb-4 rounded-full"
+
+                SelectArea ->
+                    "hidden"
+
+                _ ->
+                    "mb-4 rounded-full"
     in
     div
-        [ Attr.class "w-1/2 md:w-1/4 p-2"
+        [ Attr.class containerClasses
         ]
         [ label
             [ Attr.class ""
@@ -522,32 +597,29 @@ selection model selectionStage choice subheading urlString =
                  , Attr.name name
                  , Attr.class "invisible absolute peer"
                  , Attr.value heading
-                 , onClick (ChangeTo selectionStage choice)
+                 , on "change" (Json.Decode.succeed (ChangeTo selectionStage choice))
                  ]
                     ++ checked
                 )
                 []
             , div
-                [ Attr.class "border border-coolGray-100 rounded-md flex flex-col justify-center items-center px-4 py-4 bg-white peer-checked:bg-indigo-500 peer-checked:text-white"
+                [ Attr.class "border border-bg-sky-500 rounded-md flex flex-col justify-center items-center px-4 py-4 bg-white drop-shadow-md peer-checked:drop-shadow-none peer-checked:bg-sky-400 peer-checked:text-white"
                 ]
-                [ img
-                    [ Attr.class "mb-4 rounded-full"
+                ([ img
+                    [ Attr.class imageClasses
                     , Attr.src urlString
                     , Attr.alt ""
                     , Attr.attribute "data-config-id" "auto-img-2-1"
                     ]
                     []
-                , h2
-                    [ Attr.class "text-sm font-medium"
+                 , h2
+                    [ Attr.class "text-lg font-medium"
                     , Attr.attribute "data-config-id" "auto-txt-10-1"
                     ]
                     [ text heading ]
-                , h3
-                    [ Attr.class "mb-3 text-xs font-medium"
-                    , Attr.attribute "data-config-id" "auto-txt-11-1"
-                    ]
-                    [ text subheading ]
-                ]
+                 ]
+                    ++ subheadingElement subheading selectionStage
+                )
             ]
         ]
 
@@ -570,7 +642,7 @@ nextButton stage =
                 [ Attr.class "flex-auto w-10 flex-overflow-visible my-4 py-2 px-2 ml-2 mr-0 text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white"
                 , Attr.type_ "submit"
                 ]
-                [ text "Send Me The Quote" ]
+                [ text "Send Detailed Quote" ]
             ]
 
         _ ->

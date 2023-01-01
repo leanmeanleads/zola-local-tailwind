@@ -9796,7 +9796,49 @@ var $author$project$Main$Range = F2(
 	});
 var $author$project$Main$calculateQuote = F2(
 	function (materialChoice, areaChoice) {
-		return A2($author$project$Main$Range, 10, 100);
+		var _v0 = _Utils_Tuple2(materialChoice, areaChoice);
+		_v0$6:
+		while (true) {
+			switch (_v0.a.$) {
+				case 'Tarmac':
+					switch (_v0.b.$) {
+						case 'Small':
+							var _v1 = _v0.a;
+							var _v2 = _v0.b;
+							return A2($author$project$Main$Range, 1200, 1800);
+						case 'Medium':
+							var _v3 = _v0.a;
+							var _v4 = _v0.b;
+							return A2($author$project$Main$Range, 2400, 3600);
+						case 'Large':
+							var _v5 = _v0.a;
+							var _v6 = _v0.b;
+							return A2($author$project$Main$Range, 2700, 5400);
+						default:
+							break _v0$6;
+					}
+				case 'Concrete':
+					switch (_v0.b.$) {
+						case 'Small':
+							var _v7 = _v0.a;
+							var _v8 = _v0.b;
+							return A2($author$project$Main$Range, 2700, 4800);
+						case 'Medium':
+							var _v9 = _v0.a;
+							var _v10 = _v0.b;
+							return A2($author$project$Main$Range, 5000, 9500);
+						case 'Large':
+							var _v11 = _v0.a;
+							var _v12 = _v0.b;
+							return A2($author$project$Main$Range, 8000, 14000);
+						default:
+							break _v0$6;
+					}
+				default:
+					break _v0$6;
+			}
+		}
+		return A2($author$project$Main$Range, 1100, 2000);
 	});
 var $author$project$Main$ChooseMaterial = {$: 'ChooseMaterial'};
 var $author$project$Main$firstStage = $author$project$Main$ChooseMaterial;
@@ -10074,13 +10116,19 @@ var $author$project$Main$update = F2(
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{material: choice}),
+								{
+									material: choice,
+									quote: A2($author$project$Main$calculateQuote, choice, model.area)
+								}),
 							$elm$core$Platform$Cmd$none);
 					case 'SelectArea':
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{area: choice}),
+								{
+									area: choice,
+									quote: A2($author$project$Main$calculateQuote, model.material, choice)
+								}),
 							$elm$core$Platform$Cmd$none);
 					default:
 						return _Utils_Tuple2(
@@ -10298,7 +10346,6 @@ var $author$project$Main$renderStep = F2(
 				]));
 	});
 var $author$project$Main$Concrete = {$: 'Concrete'};
-var $author$project$Main$ExtraLarge = {$: 'ExtraLarge'};
 var $author$project$Main$Large = {$: 'Large'};
 var $author$project$Main$Medium = {$: 'Medium'};
 var $author$project$Main$Resin = {$: 'Resin'};
@@ -10321,7 +10368,7 @@ var $author$project$Main$stageDescriptions = _List_fromArray(
 		$author$project$Main$SelectArea,
 		'Area',
 		_List_fromArray(
-			[$author$project$Main$Small, $author$project$Main$Medium, $author$project$Main$Large, $author$project$Main$ExtraLarge]),
+			[$author$project$Main$Small, $author$project$Main$Medium, $author$project$Main$Large]),
 		1),
 		A4($author$project$Main$StageDescription, $author$project$Main$GetQuote, 'Quote', _List_Nil, 1)
 	]);
@@ -10364,7 +10411,7 @@ var $author$project$Main$nextButton = function (stage) {
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Send Me The Quote')
+						$elm$html$Html$text('Send Detailed Quote')
 					]))
 			]);
 	} else {
@@ -10434,6 +10481,27 @@ var $elm$html$Html$Attributes$src = function (url) {
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Main$selection = F5(
 	function (model, selectionStage, choice, subheading, urlString) {
+		var subheadingElement = F2(
+			function (subheadingText, currentStage) {
+				if (currentStage.$ === 'ChooseMaterial') {
+					return _List_Nil;
+				} else {
+					return _List_fromArray(
+						[
+							A2(
+							$elm$html$Html$h3,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('text-sm'),
+									A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-11-1')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(subheadingText)
+								]))
+						]);
+				}
+			});
 		var name = function () {
 			switch (selectionStage.$) {
 				case 'ChooseMaterial':
@@ -10444,10 +10512,20 @@ var $author$project$Main$selection = F5(
 					return 'get_quote';
 			}
 		}();
+		var imageClasses = function () {
+			switch (selectionStage.$) {
+				case 'ChooseMaterial':
+					return 'mb-4 rounded-full';
+				case 'SelectArea':
+					return 'hidden';
+				default:
+					return 'mb-4 rounded-full';
+			}
+		}();
 		var heading = function () {
 			switch (choice.$) {
 				case 'Block':
-					return 'Block';
+					return 'Block Paving';
 				case 'Resin':
 					return 'Resin';
 				case 'Concrete':
@@ -10458,10 +10536,18 @@ var $author$project$Main$selection = F5(
 					return 'Small';
 				case 'Medium':
 					return 'Medium';
-				case 'Large':
-					return 'Large';
 				default:
-					return 'Extra Large';
+					return 'Large';
+			}
+		}();
+		var containerClasses = function () {
+			switch (selectionStage.$) {
+				case 'ChooseMaterial':
+					return 'w-1/2 md:w-1/4 p-2';
+				case 'SelectArea':
+					return 'w-full md:w-1/3 p-2';
+				default:
+					return '';
 			}
 		}();
 		var checked = function () {
@@ -10484,7 +10570,7 @@ var $author$project$Main$selection = F5(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('w-1/2 md:w-1/4 p-2')
+					$elm$html$Html$Attributes$class(containerClasses)
 				]),
 			_List_fromArray(
 				[
@@ -10505,8 +10591,11 @@ var $author$project$Main$selection = F5(
 										$elm$html$Html$Attributes$name(name),
 										$elm$html$Html$Attributes$class('invisible absolute peer'),
 										$elm$html$Html$Attributes$value(heading),
-										$elm$html$Html$Events$onClick(
-										A2($author$project$Main$ChangeTo, selectionStage, choice))
+										A2(
+										$elm$html$Html$Events$on,
+										'change',
+										$elm$json$Json$Decode$succeed(
+											A2($author$project$Main$ChangeTo, selectionStage, choice)))
 									]),
 								checked),
 							_List_Nil),
@@ -10514,43 +10603,34 @@ var $author$project$Main$selection = F5(
 							$elm$html$Html$div,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('border border-coolGray-100 rounded-md flex flex-col justify-center items-center px-4 py-4 bg-white peer-checked:bg-indigo-500 peer-checked:text-white')
+									$elm$html$Html$Attributes$class('border border-bg-sky-500 rounded-md flex flex-col justify-center items-center px-4 py-4 bg-white drop-shadow-md peer-checked:drop-shadow-none peer-checked:bg-sky-400 peer-checked:text-white')
 								]),
-							_List_fromArray(
-								[
-									A2(
-									$elm$html$Html$img,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('mb-4 rounded-full'),
-											$elm$html$Html$Attributes$src(urlString),
-											$elm$html$Html$Attributes$alt(''),
-											A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-img-2-1')
-										]),
-									_List_Nil),
-									A2(
-									$elm$html$Html$h2,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('text-sm font-medium'),
-											A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-10-1')
-										]),
-									_List_fromArray(
-										[
-											$elm$html$Html$text(heading)
-										])),
-									A2(
-									$elm$html$Html$h3,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('mb-3 text-xs font-medium'),
-											A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-11-1')
-										]),
-									_List_fromArray(
-										[
-											$elm$html$Html$text(subheading)
-										]))
-								]))
+							_Utils_ap(
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$img,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class(imageClasses),
+												$elm$html$Html$Attributes$src(urlString),
+												$elm$html$Html$Attributes$alt(''),
+												A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-img-2-1')
+											]),
+										_List_Nil),
+										A2(
+										$elm$html$Html$h2,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('text-lg font-medium'),
+												A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-10-1')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text(heading)
+											]))
+									]),
+								A2(subheadingElement, subheading, selectionStage)))
 						]))
 				]));
 	});
@@ -10592,6 +10672,7 @@ var $elm$html$Html$Attributes$boolProperty = F2(
 var $elm$html$Html$Attributes$required = $elm$html$Html$Attributes$boolProperty('required');
 var $author$project$Main$renderGetQuote = function (model) {
 	var visibleClass = _Utils_eq(model.stage, $author$project$Main$GetQuote) ? '' : 'hidden';
+	var quoteAsString = '£' + ($elm$core$String$fromInt(model.quote.start) + (' - £' + $elm$core$String$fromInt(model.quote.end)));
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -10612,6 +10693,64 @@ var $author$project$Main$renderGetQuote = function (model) {
 				_Utils_ap(
 					_List_fromArray(
 						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('flex flex-wrap mb-3 w-full')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('flex-auto w-1/5 text-left pr-4 text-xl font-semibold pl-3')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Total')
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('flex-auto w-4/5 text-left text-xl font-bold pl-6')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(quoteAsString)
+										]))
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('flex flex-wrap mb-6 w-full')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('flex-auto w-1/5 text-left pr-4 text-xl font-semibold pl-3')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('')
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('flex-auto w-4/5 text-left pl-6')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Enter your contact details below for a more detailed quote.')
+										]))
+								])),
 							A2(
 							$elm$html$Html$div,
 							_List_fromArray(
@@ -10754,10 +10893,9 @@ var $author$project$Main$renderSelectArea = function (model) {
 		_Utils_ap(
 			_List_fromArray(
 				[
-					A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Small, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-					A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Medium, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-					A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Large, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
-					A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$ExtraLarge, '', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200')
+					A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Small, '10-40m2', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
+					A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Medium, '40-70m2', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200'),
+					A5($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Large, '70-120m2', 'https://7udfuvi8.twic.pics/tree_trimming__lansing__michigan/images/tree_trimming_contractor_for_hire.jpg?twic=v1/cover=200x200')
 				]),
 			$author$project$Main$actions(model)));
 };
@@ -10783,4 +10921,4 @@ var $author$project$Main$main = $elm$browser$Browser$element(
 		view: $author$project$Main$view
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main(
-	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Main.Repo":{"args":[],"type":"{ id : Basics.Int, full_name : String.String }"},"Http.Response":{"args":["body"],"type":"{ url : String.String, status : { code : Basics.Int, message : String.String }, headers : Dict.Dict String.String String.String, body : body }"}},"unions":{"Main.Msg":{"args":[],"tags":{"UpdateQuery":["String.String"],"Search":[],"LoadRepos":["Result.Result Http.Error (List.List Main.Repo)"],"NextStage":[],"PreviousStage":[],"ChangeTo":["Main.Stage","Main.Choice"]}},"Main.Choice":{"args":[],"tags":{"Block":[],"Resin":[],"Concrete":[],"Tarmac":[],"Small":[],"Medium":[],"Large":[],"ExtraLarge":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Http.Response String.String"],"BadPayload":["String.String","Http.Response String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"List.List":{"args":["a"],"tags":{}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.Stage":{"args":[],"tags":{"ChooseMaterial":[],"SelectArea":[],"GetQuote":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":[]}},"Dict.NColor":{"args":[],"tags":{"Red":[],"Black":[]}}}}})}});}(this));
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Main.Repo":{"args":[],"type":"{ id : Basics.Int, full_name : String.String }"},"Http.Response":{"args":["body"],"type":"{ url : String.String, status : { code : Basics.Int, message : String.String }, headers : Dict.Dict String.String String.String, body : body }"}},"unions":{"Main.Msg":{"args":[],"tags":{"UpdateQuery":["String.String"],"Search":[],"LoadRepos":["Result.Result Http.Error (List.List Main.Repo)"],"NextStage":[],"PreviousStage":[],"ChangeTo":["Main.Stage","Main.Choice"]}},"Main.Choice":{"args":[],"tags":{"Block":[],"Resin":[],"Concrete":[],"Tarmac":[],"Small":[],"Medium":[],"Large":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Http.Response String.String"],"BadPayload":["String.String","Http.Response String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"List.List":{"args":["a"],"tags":{}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.Stage":{"args":[],"tags":{"ChooseMaterial":[],"SelectArea":[],"GetQuote":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":[]}},"Dict.NColor":{"args":[],"tags":{"Red":[],"Black":[]}}}}})}});}(this));
