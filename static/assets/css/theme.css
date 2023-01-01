@@ -1097,6 +1097,11 @@ video {
   line-height: 1rem;
 }
 
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
 .font-normal {
   font-weight: 400;
 }
@@ -1310,6 +1315,10 @@ video {
     width: 25%;
   }
 
+  .md\:w-10\/12 {
+    width: 83.333333%;
+  }
+
   .md\:flex-shrink-0 {
     flex-shrink: 0;
   }
@@ -1346,6 +1355,11 @@ video {
     padding-bottom: 0.75rem;
   }
 
+  .md\:px-3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
   .md\:pl-10 {
     padding-left: 2.5rem;
   }
@@ -1380,6 +1394,10 @@ video {
     width: 50%;
   }
 
+  .lg\:w-8\/12 {
+    width: 66.666667%;
+  }
+
   .lg\:flex-shrink-0 {
     flex-shrink: 0;
   }
@@ -1390,5 +1408,10 @@ video {
 
   .lg\:basis-1\/2 {
     flex-basis: 50%;
+  }
+
+  .lg\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
   }
 }

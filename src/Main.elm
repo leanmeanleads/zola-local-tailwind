@@ -36,25 +36,26 @@ type alias Repo =
 type alias StageDescription =
     { stage : Stage
     , description : String
-    , choices : List Choice
-    , index : Int
     }
 
 
 stageDescriptions : List StageDescription
 stageDescriptions =
-    [ StageDescription ChooseMaterial "Material" [ Block, Resin, Concrete, Tarmac ] 0
-    , StageDescription SelectArea "Area" [ Small, Medium, Large ] 1
-    , StageDescription GetQuote "Quote" [] 1
+    [ StageDescription ChooseMaterial "Material"
+    , StageDescription SelectArea "Area"
+    , StageDescription GetQuote "Quote"
     ]
 
 
-type Choice
+type MaterialChoice
     = Block
     | Resin
     | Concrete
     | Tarmac
-    | Small
+
+
+type AreaChoice
+    = Small
     | Medium
     | Large
 
@@ -70,8 +71,8 @@ type alias Model =
     , repos : List Repo
     , error : Maybe Error
     , stage : Stage
-    , material : Choice
-    , area : Choice
+    , material : MaterialChoice
+    , area : AreaChoice
     , quote : Range
     }
 
@@ -124,7 +125,9 @@ type Msg
     | LoadRepos (Result Http.Error (List Repo))
     | NextStage
     | PreviousStage
-    | ChangeTo Stage Choice
+    | ChangeToArea AreaChoice
+    | ChangeToMaterial MaterialChoice
+    | CalculateQuote
 
 
 indexOfStage : Stage -> Int
@@ -146,17 +149,26 @@ type alias Range =
     { start : Int, end : Int }
 
 
-calculateQuote : Choice -> Choice -> Range
+calculateQuote : MaterialChoice -> AreaChoice -> Range
 calculateQuote materialChoice areaChoice =
     case ( materialChoice, areaChoice ) of
-        ( Tarmac, Small ) ->
-            Range 1200 1800
+        ( Block, Small ) ->
+            Range 2100 3000
 
-        ( Tarmac, Medium ) ->
-            Range 2400 3600
+        ( Block, Medium ) ->
+            Range 4200 6000
 
-        ( Tarmac, Large ) ->
-            Range 2700 5400
+        ( Block, Large ) ->
+            Range 6300 9000
+
+        ( Resin, Small ) ->
+            Range 1500 2400
+
+        ( Resin, Medium ) ->
+            Range 3000 4800
+
+        ( Resin, Large ) ->
+            Range 4500 7200
 
         ( Concrete, Small ) ->
             Range 2700 4800
@@ -167,23 +179,27 @@ calculateQuote materialChoice areaChoice =
         ( Concrete, Large ) ->
             Range 8000 14000
 
-        _ ->
-            Range 1100 2000
+        ( Tarmac, Small ) ->
+            Range 1200 1800
+
+        ( Tarmac, Medium ) ->
+            Range 2400 3600
+
+        ( Tarmac, Large ) ->
+            Range 2700 5400
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ChangeTo stage choice ->
-            case stage of
-                ChooseMaterial ->
-                    ( { model | material = choice, quote = calculateQuote choice model.area }, Cmd.none )
+        ChangeToArea choice ->
+            ( { model | area = choice, quote = calculateQuote model.material choice }, Cmd.none )
 
-                SelectArea ->
-                    ( { model | area = choice, quote = calculateQuote model.material choice }, Cmd.none )
+        ChangeToMaterial choice ->
+            ( { model | material = choice, quote = calculateQuote choice model.area }, Cmd.none )
 
-                GetQuote ->
-                    ( { model | quote = calculateQuote model.material model.area }, Cmd.none )
+        CalculateQuote ->
+            ( { model | quote = calculateQuote model.material model.area }, Cmd.none )
 
         NextStage ->
             ( { model | stage = nextStage model.stage }, Cmd.none )
@@ -326,7 +342,7 @@ navigation model =
             stageDescriptions |> List.map (\sd -> renderStep model sd)
     in
     div
-        [ Attr.class "w-full py-6"
+        [ Attr.class "w-full py-2 md:py-6"
         ]
         [ div [ Attr.class "flex" ] renderSteps ]
 
@@ -344,10 +360,10 @@ renderChooseMaterial model =
     div
         [ Attr.class ("flex flex-wrap " ++ visibleClass)
         ]
-        ([ selection model ChooseMaterial Block "/assets/img/block-driveway.png"
-         , selection model ChooseMaterial Resin "/assets/img/resin-driveway.png"
-         , selection model ChooseMaterial Concrete "/assets/img/concrete-driveway.png"
-         , selection model ChooseMaterial Tarmac "/assets/img/tarmac-driveway.png"
+        ([ materialSelection model Block "/assets/img/block-driveway.png"
+         , materialSelection model Resin "/assets/img/resin-driveway.png"
+         , materialSelection model Concrete "/assets/img/concrete-driveway.png"
+         , materialSelection model Tarmac "/assets/img/tarmac-driveway.png"
          ]
             ++ actions model
         )
@@ -379,32 +395,32 @@ renderGetQuote model =
                 [ Attr.class "flex flex-wrap mb-3 w-full"
                 ]
                 [ div
-                    [ Attr.class "flex-auto w-1/5 text-left pr-4 text-xl font-semibold pl-3" ]
-                    [ text "Total" ]
+                    [ Attr.class "flex-auto w-2/5 sm:w-1/5 text-left pr-4 text-xl pl-3" ]
+                    [ text "Quote" ]
                 , div
-                    [ Attr.class "flex-auto w-4/5 text-left text-xl font-bold pl-6" ]
+                    [ Attr.class "flex-auto w-3/5 sm:w-4/5 text-left text-xl font-bold pl-3 sm:pl-6" ]
                     [ text quoteAsString ]
                 ]
              , div
                 [ Attr.class "flex flex-wrap mb-6 w-full"
                 ]
                 [ div
-                    [ Attr.class "flex-auto w-1/5 text-left pr-4 text-xl font-semibold pl-3" ]
+                    [ Attr.class "flex-auto hidden sm:block sm:w-1/5 text-left pr-4 text-xl font-semibold pl-3" ]
                     [ text "" ]
                 , div
-                    [ Attr.class "flex-auto w-4/5 text-left pl-6" ]
-                    [ text "Enter your contact details below for a more detailed quote." ]
+                    [ Attr.class "flex-auto w-full sm:w-4/5 text-left pl-3 sm:pl-6" ]
+                    [ text "This is an approximate quote. Enter contact details below for a more detailed price." ]
                 ]
              , div
                 [ Attr.class "flex flex-wrap mb-4 w-full"
                 ]
                 [ label
                     [ Attr.for "name"
-                    , Attr.class "inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800"
+                    , Attr.class "inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 w-1/5 text-slate-800"
                     ]
                     [ text "Name" ]
                 , div
-                    [ Attr.class "relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5"
+                    [ Attr.class "relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 w-4/5"
                     ]
                     [ input
                         [ Attr.type_ "text"
@@ -424,11 +440,11 @@ renderGetQuote model =
                 ]
                 [ label
                     [ Attr.for "email"
-                    , Attr.class "inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800"
+                    , Attr.class "inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 w-1/5 text-slate-800"
                     ]
                     [ text "Email" ]
                 , div
-                    [ Attr.class "relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5"
+                    [ Attr.class "relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 w-4/5"
                     ]
                     [ input
                         [ Attr.type_ "email"
@@ -447,17 +463,17 @@ renderGetQuote model =
                 ]
                 [ label
                     [ Attr.for "phone"
-                    , Attr.class "inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800"
+                    , Attr.class "inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 w-1/5 text-slate-800"
                     ]
                     [ text "Phone" ]
                 , div
-                    [ Attr.class "relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5"
+                    [ Attr.class "relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 w-4/5"
                     ]
                     [ input
                         [ Attr.type_ "tel"
                         , Attr.id "phone"
                         , Attr.class "block overflow-visible py-1 px-4 m-0 w-full h-10 text-base leading-normal bg-clip-padding rounded border border-gray-300 border-solid cursor-text text-slate-800 focus:border-sky-300 focus:bg-white focus:text-slate-800"
-                        , Attr.placeholder ""
+                        , Attr.placeholder "07812 345678"
                         , Attr.name "phone"
                         , Attr.required True
                         , Attr.attribute "autocomplete" "tel"
@@ -484,35 +500,112 @@ renderSelectArea model =
     div
         [ Attr.class ("flex flex-wrap " ++ visibleClass)
         ]
-        ([ selection model SelectArea Small ""
-         , selection model SelectArea Medium ""
-         , selection model SelectArea Large ""
+        ([ areaSelection model Small
+         , areaSelection model Medium
+         , areaSelection model Large
          ]
             ++ actions model
         )
 
 
-selection : Model -> Stage -> Choice -> String -> Html Msg
-selection model selectionStage choice urlString =
+areaSelection : Model -> AreaChoice -> Html Msg
+areaSelection model choice =
     let
         checked =
-            case selectionStage of
-                ChooseMaterial ->
-                    if model.material == choice then
-                        [ Attr.attribute "checked" "checked" ]
+            if model.area == choice then
+                [ Attr.attribute "checked" "checked" ]
 
-                    else
-                        []
+            else
+                []
 
-                SelectArea ->
-                    if model.area == choice then
-                        [ Attr.attribute "checked" "checked" ]
+        heading =
+            case choice of
+                Small ->
+                    "Small"
 
-                    else
-                        []
+                Medium ->
+                    "Medium"
 
-                GetQuote ->
-                    []
+                Large ->
+                    "Large"
+
+        name =
+            "area"
+
+        containerClasses : String
+        containerClasses =
+            "w-full sm:w-1/3 p-2"
+
+        subheadingElement : AreaChoice -> List (Html Msg)
+        subheadingElement elementChoice =
+            let
+                squared =
+                    [ node "sup" [] [ text "2" ] ]
+            in
+            case elementChoice of
+                Small ->
+                    [ h3
+                        [ Attr.class "text-sm"
+                        , Attr.attribute "data-config-id" "auto-txt-11-1"
+                        ]
+                        (text "10 - 40m" :: squared)
+                    ]
+
+                Medium ->
+                    [ h3
+                        [ Attr.class "text-sm"
+                        , Attr.attribute "data-config-id" "auto-txt-11-1"
+                        ]
+                        (text "40 - 70m" :: squared)
+                    ]
+
+                Large ->
+                    [ h3
+                        [ Attr.class "text-sm"
+                        , Attr.attribute "data-config-id" "auto-txt-11-1"
+                        ]
+                        (text "70 - 120m" :: squared)
+                    ]
+    in
+    div
+        [ Attr.class containerClasses
+        ]
+        [ label
+            [ Attr.class ""
+            ]
+            [ input
+                ([ Attr.type_ "radio"
+                 , Attr.name name
+                 , Attr.class "invisible absolute peer"
+                 , Attr.value heading
+                 , on "change" (Json.Decode.succeed (ChangeToArea choice))
+                 ]
+                    ++ checked
+                )
+                []
+            , div
+                [ Attr.class "border border-bg-sky-500 rounded-md flex flex-col justify-center items-center px-4 py-4 bg-white drop-shadow-md peer-checked:drop-shadow-none peer-checked:bg-sky-400 peer-checked:text-white"
+                ]
+                (h2
+                    [ Attr.class "text-lg font-medium"
+                    , Attr.attribute "data-config-id" "auto-txt-10-1"
+                    ]
+                    [ text heading ]
+                    :: subheadingElement choice
+                )
+            ]
+        ]
+
+
+materialSelection : Model -> MaterialChoice -> String -> Html Msg
+materialSelection model choice urlString =
+    let
+        checked =
+            if model.material == choice then
+                [ Attr.attribute "checked" "checked" ]
+
+            else
+                []
 
         heading =
             case choice of
@@ -528,83 +621,16 @@ selection model selectionStage choice urlString =
                 Tarmac ->
                     "Tarmac"
 
-                Small ->
-                    "Small"
-
-                Medium ->
-                    "Medium"
-
-                Large ->
-                    "Large"
-
         name =
-            case selectionStage of
-                ChooseMaterial ->
-                    "material"
-
-                SelectArea ->
-                    "area"
-
-                GetQuote ->
-                    "get_quote"
+            "material"
 
         containerClasses : String
         containerClasses =
-            case selectionStage of
-                ChooseMaterial ->
-                    "w-1/2 md:w-1/4 p-2"
-
-                SelectArea ->
-                    "w-full md:w-1/3 p-2"
-
-                _ ->
-                    ""
-
-        subheadingElement : Stage -> Choice -> List (Html Msg)
-        subheadingElement currentStage elementChoice =
-            let
-                squared =
-                    [ node "sup" [] [ text "2" ] ]
-            in
-            case ( currentStage, elementChoice ) of
-                ( SelectArea, Small ) ->
-                    [ h3
-                        [ Attr.class "text-sm"
-                        , Attr.attribute "data-config-id" "auto-txt-11-1"
-                        ]
-                        (text "10 - 40m" :: squared)
-                    ]
-
-                ( SelectArea, Medium ) ->
-                    [ h3
-                        [ Attr.class "text-sm"
-                        , Attr.attribute "data-config-id" "auto-txt-11-1"
-                        ]
-                        (text "40 - 70m" :: squared)
-                    ]
-
-                ( SelectArea, Large ) ->
-                    [ h3
-                        [ Attr.class "text-sm"
-                        , Attr.attribute "data-config-id" "auto-txt-11-1"
-                        ]
-                        (text "70 - 120m" :: squared)
-                    ]
-
-                _ ->
-                    []
+            "w-1/2 sm:w-1/4 p-2"
 
         imageClasses : String
         imageClasses =
-            case selectionStage of
-                ChooseMaterial ->
-                    "mb-4 rounded-full"
-
-                SelectArea ->
-                    "hidden"
-
-                _ ->
-                    "mb-4 rounded-full"
+            "mb-4 rounded-full max-h-20"
     in
     div
         [ Attr.class containerClasses
@@ -617,7 +643,7 @@ selection model selectionStage choice urlString =
                  , Attr.name name
                  , Attr.class "invisible absolute peer"
                  , Attr.value heading
-                 , on "change" (Json.Decode.succeed (ChangeTo selectionStage choice))
+                 , on "change" (Json.Decode.succeed (ChangeToMaterial choice))
                  ]
                     ++ checked
                 )
@@ -625,21 +651,19 @@ selection model selectionStage choice urlString =
             , div
                 [ Attr.class "border border-bg-sky-500 rounded-md flex flex-col justify-center items-center px-4 py-4 bg-white drop-shadow-md peer-checked:drop-shadow-none peer-checked:bg-sky-400 peer-checked:text-white"
                 ]
-                ([ img
+                [ img
                     [ Attr.class imageClasses
                     , Attr.src urlString
                     , Attr.alt ""
                     , Attr.attribute "data-config-id" "auto-img-2-1"
                     ]
                     []
-                 , h2
-                    [ Attr.class "text-lg font-medium"
+                , h2
+                    [ Attr.class "text-md font-medium text-center"
                     , Attr.attribute "data-config-id" "auto-txt-10-1"
                     ]
                     [ text heading ]
-                 ]
-                    ++ subheadingElement selectionStage choice
-                )
+                ]
             ]
         ]
 
@@ -647,7 +671,7 @@ selection model selectionStage choice urlString =
 previousButton : Stage -> List (Html Msg)
 previousButton _ =
     [ a
-        [ Attr.class "flex-auto w-10 overflow-visible my-4 py-2 px-2 ml-0 mr-2 text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer border-gray-500 bg-gray-500 hover:border-gray-600 hover:bg-gray-600 hover:text-white"
+        [ Attr.class "flex-1 w-10 overflow-visible my-4 py-2 px-2 ml-0 mr-2 text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer border-gray-500 bg-gray-500 hover:border-gray-600 hover:bg-gray-600 hover:text-white"
         , onClick PreviousStage
         ]
         [ text "Previous" ]
@@ -662,7 +686,7 @@ nextButton stage =
                 [ Attr.class "flex-auto w-10 flex-overflow-visible my-4 py-2 px-2 ml-2 mr-0 text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white"
                 , Attr.type_ "submit"
                 ]
-                [ text "Send Detailed Quote" ]
+                [ text "Request Quote" ]
             ]
 
         _ ->

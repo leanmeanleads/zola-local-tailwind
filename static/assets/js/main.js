@@ -9797,48 +9797,65 @@ var $author$project$Main$Range = F2(
 var $author$project$Main$calculateQuote = F2(
 	function (materialChoice, areaChoice) {
 		var _v0 = _Utils_Tuple2(materialChoice, areaChoice);
-		_v0$6:
-		while (true) {
-			switch (_v0.a.$) {
-				case 'Tarmac':
-					switch (_v0.b.$) {
-						case 'Small':
-							var _v1 = _v0.a;
-							var _v2 = _v0.b;
-							return A2($author$project$Main$Range, 1200, 1800);
-						case 'Medium':
-							var _v3 = _v0.a;
-							var _v4 = _v0.b;
-							return A2($author$project$Main$Range, 2400, 3600);
-						case 'Large':
-							var _v5 = _v0.a;
-							var _v6 = _v0.b;
-							return A2($author$project$Main$Range, 2700, 5400);
-						default:
-							break _v0$6;
-					}
-				case 'Concrete':
-					switch (_v0.b.$) {
-						case 'Small':
-							var _v7 = _v0.a;
-							var _v8 = _v0.b;
-							return A2($author$project$Main$Range, 2700, 4800);
-						case 'Medium':
-							var _v9 = _v0.a;
-							var _v10 = _v0.b;
-							return A2($author$project$Main$Range, 5000, 9500);
-						case 'Large':
-							var _v11 = _v0.a;
-							var _v12 = _v0.b;
-							return A2($author$project$Main$Range, 8000, 14000);
-						default:
-							break _v0$6;
-					}
-				default:
-					break _v0$6;
-			}
+		switch (_v0.b.$) {
+			case 'Small':
+				switch (_v0.a.$) {
+					case 'Block':
+						var _v1 = _v0.a;
+						var _v2 = _v0.b;
+						return A2($author$project$Main$Range, 2100, 3000);
+					case 'Resin':
+						var _v7 = _v0.a;
+						var _v8 = _v0.b;
+						return A2($author$project$Main$Range, 1500, 2400);
+					case 'Concrete':
+						var _v13 = _v0.a;
+						var _v14 = _v0.b;
+						return A2($author$project$Main$Range, 2700, 4800);
+					default:
+						var _v19 = _v0.a;
+						var _v20 = _v0.b;
+						return A2($author$project$Main$Range, 1200, 1800);
+				}
+			case 'Medium':
+				switch (_v0.a.$) {
+					case 'Block':
+						var _v3 = _v0.a;
+						var _v4 = _v0.b;
+						return A2($author$project$Main$Range, 4200, 6000);
+					case 'Resin':
+						var _v9 = _v0.a;
+						var _v10 = _v0.b;
+						return A2($author$project$Main$Range, 3000, 4800);
+					case 'Concrete':
+						var _v15 = _v0.a;
+						var _v16 = _v0.b;
+						return A2($author$project$Main$Range, 5000, 9500);
+					default:
+						var _v21 = _v0.a;
+						var _v22 = _v0.b;
+						return A2($author$project$Main$Range, 2400, 3600);
+				}
+			default:
+				switch (_v0.a.$) {
+					case 'Block':
+						var _v5 = _v0.a;
+						var _v6 = _v0.b;
+						return A2($author$project$Main$Range, 6300, 9000);
+					case 'Resin':
+						var _v11 = _v0.a;
+						var _v12 = _v0.b;
+						return A2($author$project$Main$Range, 4500, 7200);
+					case 'Concrete':
+						var _v17 = _v0.a;
+						var _v18 = _v0.b;
+						return A2($author$project$Main$Range, 8000, 14000);
+					default:
+						var _v23 = _v0.a;
+						var _v24 = _v0.b;
+						return A2($author$project$Main$Range, 2700, 5400);
+				}
 		}
-		return A2($author$project$Main$Range, 1100, 2000);
 	});
 var $author$project$Main$ChooseMaterial = {$: 'ChooseMaterial'};
 var $author$project$Main$firstStage = $author$project$Main$ChooseMaterial;
@@ -10108,37 +10125,34 @@ var $author$project$Main$previousStage = function (currentStage) {
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 'ChangeTo':
-				var stage = msg.a;
-				var choice = msg.b;
-				switch (stage.$) {
-					case 'ChooseMaterial':
-						return _Utils_Tuple2(
-							_Utils_update(
-								model,
-								{
-									material: choice,
-									quote: A2($author$project$Main$calculateQuote, choice, model.area)
-								}),
-							$elm$core$Platform$Cmd$none);
-					case 'SelectArea':
-						return _Utils_Tuple2(
-							_Utils_update(
-								model,
-								{
-									area: choice,
-									quote: A2($author$project$Main$calculateQuote, model.material, choice)
-								}),
-							$elm$core$Platform$Cmd$none);
-					default:
-						return _Utils_Tuple2(
-							_Utils_update(
-								model,
-								{
-									quote: A2($author$project$Main$calculateQuote, model.material, model.area)
-								}),
-							$elm$core$Platform$Cmd$none);
-				}
+			case 'ChangeToArea':
+				var choice = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							area: choice,
+							quote: A2($author$project$Main$calculateQuote, model.material, choice)
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 'ChangeToMaterial':
+				var choice = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							material: choice,
+							quote: A2($author$project$Main$calculateQuote, choice, model.area)
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 'CalculateQuote':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							quote: A2($author$project$Main$calculateQuote, model.material, model.area)
+						}),
+					$elm$core$Platform$Cmd$none);
 			case 'NextStage':
 				return _Utils_Tuple2(
 					_Utils_update(
@@ -10345,32 +10359,15 @@ var $author$project$Main$renderStep = F2(
 						]))
 				]));
 	});
-var $author$project$Main$Concrete = {$: 'Concrete'};
-var $author$project$Main$Large = {$: 'Large'};
-var $author$project$Main$Medium = {$: 'Medium'};
-var $author$project$Main$Resin = {$: 'Resin'};
-var $author$project$Main$StageDescription = F4(
-	function (stage, description, choices, index) {
-		return {choices: choices, description: description, index: index, stage: stage};
+var $author$project$Main$StageDescription = F2(
+	function (stage, description) {
+		return {description: description, stage: stage};
 	});
-var $author$project$Main$Tarmac = {$: 'Tarmac'};
 var $author$project$Main$stageDescriptions = _List_fromArray(
 	[
-		A4(
-		$author$project$Main$StageDescription,
-		$author$project$Main$ChooseMaterial,
-		'Material',
-		_List_fromArray(
-			[$author$project$Main$Block, $author$project$Main$Resin, $author$project$Main$Concrete, $author$project$Main$Tarmac]),
-		0),
-		A4(
-		$author$project$Main$StageDescription,
-		$author$project$Main$SelectArea,
-		'Area',
-		_List_fromArray(
-			[$author$project$Main$Small, $author$project$Main$Medium, $author$project$Main$Large]),
-		1),
-		A4($author$project$Main$StageDescription, $author$project$Main$GetQuote, 'Quote', _List_Nil, 1)
+		A2($author$project$Main$StageDescription, $author$project$Main$ChooseMaterial, 'Material'),
+		A2($author$project$Main$StageDescription, $author$project$Main$SelectArea, 'Area'),
+		A2($author$project$Main$StageDescription, $author$project$Main$GetQuote, 'Quote')
 	]);
 var $author$project$Main$navigation = function (model) {
 	var renderSteps = A2(
@@ -10383,7 +10380,7 @@ var $author$project$Main$navigation = function (model) {
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('w-full py-6')
+				$elm$html$Html$Attributes$class('w-full py-2 md:py-6')
 			]),
 		_List_fromArray(
 			[
@@ -10396,6 +10393,9 @@ var $author$project$Main$navigation = function (model) {
 				renderSteps)
 			]));
 };
+var $author$project$Main$Concrete = {$: 'Concrete'};
+var $author$project$Main$Resin = {$: 'Resin'};
+var $author$project$Main$Tarmac = {$: 'Tarmac'};
 var $author$project$Main$NextStage = {$: 'NextStage'};
 var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $author$project$Main$nextButton = function (stage) {
@@ -10411,7 +10411,7 @@ var $author$project$Main$nextButton = function (stage) {
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Send Detailed Quote')
+						$elm$html$Html$text('Request Quote')
 					]))
 			]);
 	} else {
@@ -10439,7 +10439,7 @@ var $author$project$Main$previousButton = function (_v0) {
 			$elm$html$Html$a,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('flex-auto w-10 overflow-visible my-4 py-2 px-2 ml-0 mr-2 text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer border-gray-500 bg-gray-500 hover:border-gray-600 hover:bg-gray-600 hover:text-white'),
+					$elm$html$Html$Attributes$class('flex-1 w-10 overflow-visible my-4 py-2 px-2 ml-0 mr-2 text-xl font-bold leading-normal text-center text-white normal-case align-middle whitespace-nowrap rounded border border-solid cursor-pointer border-gray-500 bg-gray-500 hover:border-gray-600 hover:bg-gray-600 hover:text-white'),
 					$elm$html$Html$Events$onClick($author$project$Main$PreviousStage)
 				]),
 			_List_fromArray(
@@ -10453,10 +10453,9 @@ var $author$project$Main$actions = function (model) {
 		$author$project$Main$previousButton(model.stage),
 		$author$project$Main$nextButton(model.stage));
 };
-var $author$project$Main$ChangeTo = F2(
-	function (a, b) {
-		return {$: 'ChangeTo', a: a, b: b};
-	});
+var $author$project$Main$ChangeToMaterial = function (a) {
+	return {$: 'ChangeToMaterial', a: a};
+};
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $elm$virtual_dom$VirtualDom$attribute = F2(
 	function (key, value) {
@@ -10467,7 +10466,6 @@ var $elm$virtual_dom$VirtualDom$attribute = F2(
 	});
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
-var $elm$html$Html$h3 = _VirtualDom_node('h3');
 var $elm$html$Html$img = _VirtualDom_node('img');
 var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$html$Html$label = _VirtualDom_node('label');
@@ -10479,106 +10477,10 @@ var $elm$html$Html$Attributes$src = function (url) {
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
-var $author$project$Main$selection = F4(
-	function (model, selectionStage, choice, urlString) {
-		var subheadingElement = F2(
-			function (currentStage, elementChoice) {
-				var squared = _List_fromArray(
-					[
-						A3(
-						$elm$html$Html$node,
-						'sup',
-						_List_Nil,
-						_List_fromArray(
-							[
-								$elm$html$Html$text('2')
-							]))
-					]);
-				var _v5 = _Utils_Tuple2(currentStage, elementChoice);
-				_v5$3:
-				while (true) {
-					if (_v5.a.$ === 'SelectArea') {
-						switch (_v5.b.$) {
-							case 'Small':
-								var _v6 = _v5.a;
-								var _v7 = _v5.b;
-								return _List_fromArray(
-									[
-										A2(
-										$elm$html$Html$h3,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('text-sm'),
-												A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-11-1')
-											]),
-										A2(
-											$elm$core$List$cons,
-											$elm$html$Html$text('10 - 40m'),
-											squared))
-									]);
-							case 'Medium':
-								var _v8 = _v5.a;
-								var _v9 = _v5.b;
-								return _List_fromArray(
-									[
-										A2(
-										$elm$html$Html$h3,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('text-sm'),
-												A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-11-1')
-											]),
-										A2(
-											$elm$core$List$cons,
-											$elm$html$Html$text('40 - 70m'),
-											squared))
-									]);
-							case 'Large':
-								var _v10 = _v5.a;
-								var _v11 = _v5.b;
-								return _List_fromArray(
-									[
-										A2(
-										$elm$html$Html$h3,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('text-sm'),
-												A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-11-1')
-											]),
-										A2(
-											$elm$core$List$cons,
-											$elm$html$Html$text('70 - 120m'),
-											squared))
-									]);
-							default:
-								break _v5$3;
-						}
-					} else {
-						break _v5$3;
-					}
-				}
-				return _List_Nil;
-			});
-		var name = function () {
-			switch (selectionStage.$) {
-				case 'ChooseMaterial':
-					return 'material';
-				case 'SelectArea':
-					return 'area';
-				default:
-					return 'get_quote';
-			}
-		}();
-		var imageClasses = function () {
-			switch (selectionStage.$) {
-				case 'ChooseMaterial':
-					return 'mb-4 rounded-full';
-				case 'SelectArea':
-					return 'hidden';
-				default:
-					return 'mb-4 rounded-full';
-			}
-		}();
+var $author$project$Main$materialSelection = F3(
+	function (model, choice, urlString) {
+		var name = 'material';
+		var imageClasses = 'mb-4 rounded-full max-h-20';
 		var heading = function () {
 			switch (choice.$) {
 				case 'Block':
@@ -10587,42 +10489,15 @@ var $author$project$Main$selection = F4(
 					return 'Resin';
 				case 'Concrete':
 					return 'Concrete';
-				case 'Tarmac':
+				default:
 					return 'Tarmac';
-				case 'Small':
-					return 'Small';
-				case 'Medium':
-					return 'Medium';
-				default:
-					return 'Large';
 			}
 		}();
-		var containerClasses = function () {
-			switch (selectionStage.$) {
-				case 'ChooseMaterial':
-					return 'w-1/2 md:w-1/4 p-2';
-				case 'SelectArea':
-					return 'w-full md:w-1/3 p-2';
-				default:
-					return '';
-			}
-		}();
-		var checked = function () {
-			switch (selectionStage.$) {
-				case 'ChooseMaterial':
-					return _Utils_eq(model.material, choice) ? _List_fromArray(
-						[
-							A2($elm$html$Html$Attributes$attribute, 'checked', 'checked')
-						]) : _List_Nil;
-				case 'SelectArea':
-					return _Utils_eq(model.area, choice) ? _List_fromArray(
-						[
-							A2($elm$html$Html$Attributes$attribute, 'checked', 'checked')
-						]) : _List_Nil;
-				default:
-					return _List_Nil;
-			}
-		}();
+		var containerClasses = 'w-1/2 sm:w-1/4 p-2';
+		var checked = _Utils_eq(model.material, choice) ? _List_fromArray(
+			[
+				A2($elm$html$Html$Attributes$attribute, 'checked', 'checked')
+			]) : _List_Nil;
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -10652,7 +10527,7 @@ var $author$project$Main$selection = F4(
 										$elm$html$Html$Events$on,
 										'change',
 										$elm$json$Json$Decode$succeed(
-											A2($author$project$Main$ChangeTo, selectionStage, choice)))
+											$author$project$Main$ChangeToMaterial(choice)))
 									]),
 								checked),
 							_List_Nil),
@@ -10662,32 +10537,30 @@ var $author$project$Main$selection = F4(
 								[
 									$elm$html$Html$Attributes$class('border border-bg-sky-500 rounded-md flex flex-col justify-center items-center px-4 py-4 bg-white drop-shadow-md peer-checked:drop-shadow-none peer-checked:bg-sky-400 peer-checked:text-white')
 								]),
-							_Utils_ap(
-								_List_fromArray(
-									[
-										A2(
-										$elm$html$Html$img,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class(imageClasses),
-												$elm$html$Html$Attributes$src(urlString),
-												$elm$html$Html$Attributes$alt(''),
-												A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-img-2-1')
-											]),
-										_List_Nil),
-										A2(
-										$elm$html$Html$h2,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('text-lg font-medium'),
-												A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-10-1')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text(heading)
-											]))
-									]),
-								A2(subheadingElement, selectionStage, choice)))
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$img,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class(imageClasses),
+											$elm$html$Html$Attributes$src(urlString),
+											$elm$html$Html$Attributes$alt(''),
+											A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-img-2-1')
+										]),
+									_List_Nil),
+									A2(
+									$elm$html$Html$h2,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('text-md font-medium text-center'),
+											A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-10-1')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(heading)
+										]))
+								]))
 						]))
 				]));
 	});
@@ -10702,10 +10575,10 @@ var $author$project$Main$renderChooseMaterial = function (model) {
 		_Utils_ap(
 			_List_fromArray(
 				[
-					A4($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Block, '/assets/img/block-driveway.png'),
-					A4($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Resin, '/assets/img/resin-driveway.png'),
-					A4($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Concrete, '/assets/img/concrete-driveway.png'),
-					A4($author$project$Main$selection, model, $author$project$Main$ChooseMaterial, $author$project$Main$Tarmac, '/assets/img/tarmac-driveway.png')
+					A3($author$project$Main$materialSelection, model, $author$project$Main$Block, '/assets/img/block-driveway.png'),
+					A3($author$project$Main$materialSelection, model, $author$project$Main$Resin, '/assets/img/resin-driveway.png'),
+					A3($author$project$Main$materialSelection, model, $author$project$Main$Concrete, '/assets/img/concrete-driveway.png'),
+					A3($author$project$Main$materialSelection, model, $author$project$Main$Tarmac, '/assets/img/tarmac-driveway.png')
 				]),
 			$author$project$Main$actions(model)));
 };
@@ -10762,17 +10635,17 @@ var $author$project$Main$renderGetQuote = function (model) {
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('flex-auto w-1/5 text-left pr-4 text-xl font-semibold pl-3')
+											$elm$html$Html$Attributes$class('flex-auto w-2/5 sm:w-1/5 text-left pr-4 text-xl pl-3')
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text('Total')
+											$elm$html$Html$text('Quote')
 										])),
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('flex-auto w-4/5 text-left text-xl font-bold pl-6')
+											$elm$html$Html$Attributes$class('flex-auto w-3/5 sm:w-4/5 text-left text-xl font-bold pl-3 sm:pl-6')
 										]),
 									_List_fromArray(
 										[
@@ -10791,7 +10664,7 @@ var $author$project$Main$renderGetQuote = function (model) {
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('flex-auto w-1/5 text-left pr-4 text-xl font-semibold pl-3')
+											$elm$html$Html$Attributes$class('flex-auto hidden sm:block sm:w-1/5 text-left pr-4 text-xl font-semibold pl-3')
 										]),
 									_List_fromArray(
 										[
@@ -10801,11 +10674,11 @@ var $author$project$Main$renderGetQuote = function (model) {
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('flex-auto w-4/5 text-left pl-6')
+											$elm$html$Html$Attributes$class('flex-auto w-full sm:w-4/5 text-left pl-3 sm:pl-6')
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text('Enter your contact details below for a more detailed quote.')
+											$elm$html$Html$text('This is an approximate quote. Enter contact details below for a more detailed price.')
 										]))
 								])),
 							A2(
@@ -10821,7 +10694,7 @@ var $author$project$Main$renderGetQuote = function (model) {
 									_List_fromArray(
 										[
 											$elm$html$Html$Attributes$for('name'),
-											$elm$html$Html$Attributes$class('inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800')
+											$elm$html$Html$Attributes$class('inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 w-1/5 text-slate-800')
 										]),
 									_List_fromArray(
 										[
@@ -10831,7 +10704,7 @@ var $author$project$Main$renderGetQuote = function (model) {
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5')
+											$elm$html$Html$Attributes$class('relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 w-4/5')
 										]),
 									_List_fromArray(
 										[
@@ -10864,7 +10737,7 @@ var $author$project$Main$renderGetQuote = function (model) {
 									_List_fromArray(
 										[
 											$elm$html$Html$Attributes$for('email'),
-											$elm$html$Html$Attributes$class('inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800')
+											$elm$html$Html$Attributes$class('inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 w-1/5 text-slate-800')
 										]),
 									_List_fromArray(
 										[
@@ -10874,7 +10747,7 @@ var $author$project$Main$renderGetQuote = function (model) {
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5')
+											$elm$html$Html$Attributes$class('relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 w-4/5')
 										]),
 									_List_fromArray(
 										[
@@ -10906,7 +10779,7 @@ var $author$project$Main$renderGetQuote = function (model) {
 									_List_fromArray(
 										[
 											$elm$html$Html$Attributes$for('phone'),
-											$elm$html$Html$Attributes$class('inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 basis-1/5 text-slate-800')
+											$elm$html$Html$Attributes$class('inline-block relative flex-grow-0 flex-shrink-0 py-2 px-3 mb-0 w-full leading-normal cursor-default md:flex-shrink-0 md:flex-grow-0 w-1/5 text-slate-800')
 										]),
 									_List_fromArray(
 										[
@@ -10916,7 +10789,7 @@ var $author$project$Main$renderGetQuote = function (model) {
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 basis-4/5')
+											$elm$html$Html$Attributes$class('relative flex-grow-0 flex-shrink-0 px-3 w-full md:flex-shrink-0 md:flex-grow-0 w-4/5')
 										]),
 									_List_fromArray(
 										[
@@ -10927,7 +10800,7 @@ var $author$project$Main$renderGetQuote = function (model) {
 													$elm$html$Html$Attributes$type_('tel'),
 													$elm$html$Html$Attributes$id('phone'),
 													$elm$html$Html$Attributes$class('block overflow-visible py-1 px-4 m-0 w-full h-10 text-base leading-normal bg-clip-padding rounded border border-gray-300 border-solid cursor-text text-slate-800 focus:border-sky-300 focus:bg-white focus:text-slate-800'),
-													$elm$html$Html$Attributes$placeholder(''),
+													$elm$html$Html$Attributes$placeholder('07812 345678'),
 													$elm$html$Html$Attributes$name('phone'),
 													$elm$html$Html$Attributes$required(true),
 													A2($elm$html$Html$Attributes$attribute, 'autocomplete', 'tel')
@@ -10939,6 +10812,146 @@ var $author$project$Main$renderGetQuote = function (model) {
 					$author$project$Main$actions(model)))
 			]));
 };
+var $author$project$Main$Large = {$: 'Large'};
+var $author$project$Main$Medium = {$: 'Medium'};
+var $author$project$Main$ChangeToArea = function (a) {
+	return {$: 'ChangeToArea', a: a};
+};
+var $elm$html$Html$h3 = _VirtualDom_node('h3');
+var $author$project$Main$areaSelection = F2(
+	function (model, choice) {
+		var subheadingElement = function (elementChoice) {
+			var squared = _List_fromArray(
+				[
+					A3(
+					$elm$html$Html$node,
+					'sup',
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('2')
+						]))
+				]);
+			switch (elementChoice.$) {
+				case 'Small':
+					return _List_fromArray(
+						[
+							A2(
+							$elm$html$Html$h3,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('text-sm'),
+									A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-11-1')
+								]),
+							A2(
+								$elm$core$List$cons,
+								$elm$html$Html$text('10 - 40m'),
+								squared))
+						]);
+				case 'Medium':
+					return _List_fromArray(
+						[
+							A2(
+							$elm$html$Html$h3,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('text-sm'),
+									A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-11-1')
+								]),
+							A2(
+								$elm$core$List$cons,
+								$elm$html$Html$text('40 - 70m'),
+								squared))
+						]);
+				default:
+					return _List_fromArray(
+						[
+							A2(
+							$elm$html$Html$h3,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('text-sm'),
+									A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-11-1')
+								]),
+							A2(
+								$elm$core$List$cons,
+								$elm$html$Html$text('70 - 120m'),
+								squared))
+						]);
+			}
+		};
+		var name = 'area';
+		var heading = function () {
+			switch (choice.$) {
+				case 'Small':
+					return 'Small';
+				case 'Medium':
+					return 'Medium';
+				default:
+					return 'Large';
+			}
+		}();
+		var containerClasses = 'w-full sm:w-1/3 p-2';
+		var checked = _Utils_eq(model.area, choice) ? _List_fromArray(
+			[
+				A2($elm$html$Html$Attributes$attribute, 'checked', 'checked')
+			]) : _List_Nil;
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class(containerClasses)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$label,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$input,
+							_Utils_ap(
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$type_('radio'),
+										$elm$html$Html$Attributes$name(name),
+										$elm$html$Html$Attributes$class('invisible absolute peer'),
+										$elm$html$Html$Attributes$value(heading),
+										A2(
+										$elm$html$Html$Events$on,
+										'change',
+										$elm$json$Json$Decode$succeed(
+											$author$project$Main$ChangeToArea(choice)))
+									]),
+								checked),
+							_List_Nil),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('border border-bg-sky-500 rounded-md flex flex-col justify-center items-center px-4 py-4 bg-white drop-shadow-md peer-checked:drop-shadow-none peer-checked:bg-sky-400 peer-checked:text-white')
+								]),
+							A2(
+								$elm$core$List$cons,
+								A2(
+									$elm$html$Html$h2,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('text-lg font-medium'),
+											A2($elm$html$Html$Attributes$attribute, 'data-config-id', 'auto-txt-10-1')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(heading)
+										])),
+								subheadingElement(choice)))
+						]))
+				]));
+	});
 var $author$project$Main$renderSelectArea = function (model) {
 	var visibleClass = _Utils_eq(model.stage, $author$project$Main$SelectArea) ? '' : 'hidden';
 	return A2(
@@ -10950,9 +10963,9 @@ var $author$project$Main$renderSelectArea = function (model) {
 		_Utils_ap(
 			_List_fromArray(
 				[
-					A4($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Small, ''),
-					A4($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Medium, ''),
-					A4($author$project$Main$selection, model, $author$project$Main$SelectArea, $author$project$Main$Large, '')
+					A2($author$project$Main$areaSelection, model, $author$project$Main$Small),
+					A2($author$project$Main$areaSelection, model, $author$project$Main$Medium),
+					A2($author$project$Main$areaSelection, model, $author$project$Main$Large)
 				]),
 			$author$project$Main$actions(model)));
 };
@@ -10978,4 +10991,4 @@ var $author$project$Main$main = $elm$browser$Browser$element(
 		view: $author$project$Main$view
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main(
-	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Main.Repo":{"args":[],"type":"{ id : Basics.Int, full_name : String.String }"},"Http.Response":{"args":["body"],"type":"{ url : String.String, status : { code : Basics.Int, message : String.String }, headers : Dict.Dict String.String String.String, body : body }"}},"unions":{"Main.Msg":{"args":[],"tags":{"UpdateQuery":["String.String"],"Search":[],"LoadRepos":["Result.Result Http.Error (List.List Main.Repo)"],"NextStage":[],"PreviousStage":[],"ChangeTo":["Main.Stage","Main.Choice"]}},"Main.Choice":{"args":[],"tags":{"Block":[],"Resin":[],"Concrete":[],"Tarmac":[],"Small":[],"Medium":[],"Large":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Http.Response String.String"],"BadPayload":["String.String","Http.Response String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"List.List":{"args":["a"],"tags":{}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.Stage":{"args":[],"tags":{"ChooseMaterial":[],"SelectArea":[],"GetQuote":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":[]}},"Dict.NColor":{"args":[],"tags":{"Red":[],"Black":[]}}}}})}});}(this));
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Main.Repo":{"args":[],"type":"{ id : Basics.Int, full_name : String.String }"},"Http.Response":{"args":["body"],"type":"{ url : String.String, status : { code : Basics.Int, message : String.String }, headers : Dict.Dict String.String String.String, body : body }"}},"unions":{"Main.Msg":{"args":[],"tags":{"UpdateQuery":["String.String"],"Search":[],"LoadRepos":["Result.Result Http.Error (List.List Main.Repo)"],"NextStage":[],"PreviousStage":[],"ChangeToArea":["Main.AreaChoice"],"ChangeToMaterial":["Main.MaterialChoice"],"CalculateQuote":[]}},"Main.AreaChoice":{"args":[],"tags":{"Small":[],"Medium":[],"Large":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Http.Response String.String"],"BadPayload":["String.String","Http.Response String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"List.List":{"args":["a"],"tags":{}},"Main.MaterialChoice":{"args":[],"tags":{"Block":[],"Resin":[],"Concrete":[],"Tarmac":[]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"String.String":{"args":[],"tags":{"String":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":[]}},"Dict.NColor":{"args":[],"tags":{"Red":[],"Black":[]}}}}})}});}(this));
