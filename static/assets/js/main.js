@@ -6614,12 +6614,6 @@ var $author$project$Main$renderChooseMaterial = function (model) {
 				]),
 			$author$project$Main$actions(model)));
 };
-var $elm$html$Html$Attributes$action = function (uri) {
-	return A2(
-		$elm$html$Html$Attributes$stringProperty,
-		'action',
-		_VirtualDom_noJavaScriptUri(uri));
-};
 var $elm$html$Html$Attributes$for = $elm$html$Html$Attributes$stringProperty('htmlFor');
 var $elm$html$Html$form = _VirtualDom_node('form');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
@@ -6648,9 +6642,7 @@ var $author$project$Main$renderGetQuote = function (model) {
 				$elm$html$Html$form,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$name('quote'),
 						A2($elm$html$Html$Attributes$attribute, 'data-netlify', 'true'),
-						$elm$html$Html$Attributes$action('/thank-you'),
 						$elm$html$Html$Attributes$class('w-full flex flex-wrap')
 					]),
 				_Utils_ap(
