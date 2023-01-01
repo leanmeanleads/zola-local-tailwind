@@ -6657,6 +6657,15 @@ var $author$project$Main$renderGetQuote = function (model) {
 					_List_fromArray(
 						[
 							A2(
+							$elm$html$Html$input,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$type_('hidden'),
+									$elm$html$Html$Attributes$name('form-name'),
+									$elm$html$Html$Attributes$value('quote')
+								]),
+							_List_Nil),
+							A2(
 							$elm$html$Html$div,
 							_List_fromArray(
 								[

@@ -391,7 +391,13 @@ renderGetQuote model =
             , Attr.action "/thank-you"
             , Attr.class "w-full flex flex-wrap"
             ]
-            ([ div
+            ([ input
+                [ Attr.type_ "hidden"
+                , Attr.name "form-name"
+                , Attr.value "quote"
+                ]
+                []
+             , div
                 [ Attr.class "flex flex-wrap mb-3 w-full"
                 ]
                 [ div
