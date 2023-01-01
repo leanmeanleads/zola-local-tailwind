@@ -17,29 +17,21 @@
           {% if config.extra.use_quote_calculator %}
           <!-- Hidden form so Netlify can detect it -->
           <form name="quote"
+                netlify
+                hidden
                 data-netlify="true"
-                action="/thank-you"
                 class="hidden">
                 <input type="text"
-                       id="name"
-                       placeholder="Your Name"
                        name="name"
-                       required
-                       autocomplete="name"
-                       data-form-type="name">
+                       required >
                 <input type="email"
-                       id="email"
-                       placeholder="name@example.com"
                        name="email"
                        required
                        autocomplete="email">
                 <input type="tel"
-                       id="phone"
-                       placeholder=""
                        name="phone"
                        required
                        autocomplete="tel">
-              <button type="submit">Submit</button>
           </form>
           <div id="myapp">
           </div>
