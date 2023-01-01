@@ -6660,6 +6660,33 @@ var $author$project$Main$renderGetQuote = function (model) {
 								]),
 							_List_Nil),
 							A2(
+							$elm$html$Html$input,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$type_('hidden'),
+									$elm$html$Html$Attributes$name('material'),
+									$elm$html$Html$Attributes$value('block')
+								]),
+							_List_Nil),
+							A2(
+							$elm$html$Html$input,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$type_('hidden'),
+									$elm$html$Html$Attributes$name('area'),
+									$elm$html$Html$Attributes$value('large')
+								]),
+							_List_Nil),
+							A2(
+							$elm$html$Html$input,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$type_('hidden'),
+									$elm$html$Html$Attributes$name('quote'),
+									$elm$html$Html$Attributes$value('£1200 - £2400')
+								]),
+							_List_Nil),
+							A2(
 							$elm$html$Html$div,
 							_List_fromArray(
 								[

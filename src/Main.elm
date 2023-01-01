@@ -396,6 +396,9 @@ renderGetQuote model =
                 , Attr.value "quote"
                 ]
                 []
+             , input [ Attr.type_ "hidden", Attr.name "material", Attr.value "block" ] []
+             , input [ Attr.type_ "hidden", Attr.name "area", Attr.value "large" ] []
+             , input [ Attr.type_ "hidden", Attr.name "quote", Attr.value "£1200 - £2400" ] []
              , div
                 [ Attr.class "flex flex-wrap mb-3 w-full"
                 ]
