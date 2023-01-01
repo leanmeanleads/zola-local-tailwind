@@ -770,11 +770,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.at.D === region.aa.D)
+	if (region.at.E === region.aa.E)
 	{
-		return 'on line ' + region.at.D;
+		return 'on line ' + region.at.E;
 	}
-	return 'on lines ' + region.at.D + ' through ' + region.aa.D;
+	return 'on lines ' + region.at.E + ' through ' + region.aa.E;
 }
 
 
@@ -4071,17 +4071,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aI: 'hidden', C: 'visibilitychange' }
+		? { aI: 'hidden', D: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aI: 'mozHidden', C: 'mozvisibilitychange' }
+		? { aI: 'mozHidden', D: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aI: 'msHidden', C: 'msvisibilitychange' }
+		? { aI: 'msHidden', D: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aI: 'webkitHidden', C: 'webkitvisibilitychange' }
-		: { aI: 'hidden', C: 'visibilitychange' };
+		? { aI: 'webkitHidden', D: 'webkitvisibilitychange' }
+		: { aI: 'hidden', D: 'visibilitychange' };
 }
 
 
@@ -4166,8 +4166,8 @@ function _Browser_getViewport()
 		ax: {
 			L: _Browser_window.pageXOffset,
 			M: _Browser_window.pageYOffset,
-			z: _Browser_doc.documentElement.clientWidth,
-			t: _Browser_doc.documentElement.clientHeight
+			B: _Browser_doc.documentElement.clientWidth,
+			u: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4177,8 +4177,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		z: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		t: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		B: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		u: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4202,14 +4202,14 @@ function _Browser_getViewportOf(id)
 	{
 		return {
 			as: {
-				z: node.scrollWidth,
-				t: node.scrollHeight
+				B: node.scrollWidth,
+				u: node.scrollHeight
 			},
 			ax: {
 				L: node.scrollLeft,
 				M: node.scrollTop,
-				z: node.clientWidth,
-				t: node.clientHeight
+				B: node.clientWidth,
+				u: node.clientHeight
 			}
 		};
 	});
@@ -4243,14 +4243,14 @@ function _Browser_getElement(id)
 			ax: {
 				L: x,
 				M: y,
-				z: _Browser_doc.documentElement.clientWidth,
-				t: _Browser_doc.documentElement.clientHeight
+				B: _Browser_doc.documentElement.clientWidth,
+				u: _Browser_doc.documentElement.clientHeight
 			},
 			aF: {
 				L: x + rect.left,
 				M: y + rect.top,
-				z: rect.width,
-				t: rect.height
+				B: rect.width,
+				u: rect.height
 			}
 		};
 	});
@@ -5253,7 +5253,7 @@ var $elm$browser$Browser$element = _Browser_element;
 var $author$project$Main$Block = 0;
 var $author$project$Main$Model = F7(
 	function (query, repos, error, stage, material, area, quote) {
-		return {B: area, ab: error, E: material, R: query, v: quote, S: repos, a: stage};
+		return {s: area, ab: error, v: material, R: query, x: quote, S: repos, a: stage};
 	});
 var $author$project$Main$Small = 0;
 var $author$project$Main$Range = F2(
@@ -6129,8 +6129,8 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							B: choice,
-							v: A2($author$project$Main$calculateQuote, model.E, choice)
+							s: choice,
+							x: A2($author$project$Main$calculateQuote, model.v, choice)
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 6:
@@ -6139,8 +6139,8 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							E: choice,
-							v: A2($author$project$Main$calculateQuote, choice, model.B)
+							v: choice,
+							x: A2($author$project$Main$calculateQuote, choice, model.s)
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 7:
@@ -6148,7 +6148,7 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							v: A2($author$project$Main$calculateQuote, model.E, model.B)
+							x: A2($author$project$Main$calculateQuote, model.v, model.s)
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 3:
@@ -6526,7 +6526,7 @@ var $author$project$Main$materialSelection = F3(
 			}
 		}();
 		var containerClasses = 'w-1/2 sm:w-1/4 p-2';
-		var checked = _Utils_eq(model.E, choice) ? _List_fromArray(
+		var checked = _Utils_eq(model.v, choice) ? _List_fromArray(
 			[
 				A2($elm$html$Html$Attributes$attribute, 'checked', 'checked')
 			]) : _List_Nil;
@@ -6630,7 +6630,31 @@ var $elm$html$Html$Attributes$boolProperty = F2(
 var $elm$html$Html$Attributes$required = $elm$html$Html$Attributes$boolProperty('required');
 var $author$project$Main$renderGetQuote = function (model) {
 	var visibleClass = (model.a === 2) ? '' : 'hidden';
-	var quoteAsString = '£' + ($elm$core$String$fromInt(model.v.at) + (' - £' + $elm$core$String$fromInt(model.v.aa)));
+	var quoteAsString = '£' + ($elm$core$String$fromInt(model.x.at) + (' - £' + $elm$core$String$fromInt(model.x.aa)));
+	var materialValue = function () {
+		var _v1 = model.v;
+		switch (_v1) {
+			case 0:
+				return 'block';
+			case 1:
+				return 'resin';
+			case 2:
+				return 'concrete';
+			default:
+				return 'tarmac';
+		}
+	}();
+	var areaValue = function () {
+		var _v0 = model.s;
+		switch (_v0) {
+			case 0:
+				return 'small 10 - 40 m2';
+			case 1:
+				return 'medium 40 - 70 m2';
+			default:
+				return 'large 70 - 120 m2';
+		}
+	}();
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -6665,7 +6689,7 @@ var $author$project$Main$renderGetQuote = function (model) {
 								[
 									$elm$html$Html$Attributes$type_('hidden'),
 									$elm$html$Html$Attributes$name('material'),
-									$elm$html$Html$Attributes$value('block')
+									$elm$html$Html$Attributes$value(materialValue)
 								]),
 							_List_Nil),
 							A2(
@@ -6674,7 +6698,7 @@ var $author$project$Main$renderGetQuote = function (model) {
 								[
 									$elm$html$Html$Attributes$type_('hidden'),
 									$elm$html$Html$Attributes$name('area'),
-									$elm$html$Html$Attributes$value('large')
+									$elm$html$Html$Attributes$value(areaValue)
 								]),
 							_List_Nil),
 							A2(
@@ -6683,7 +6707,7 @@ var $author$project$Main$renderGetQuote = function (model) {
 								[
 									$elm$html$Html$Attributes$type_('hidden'),
 									$elm$html$Html$Attributes$name('quote'),
-									$elm$html$Html$Attributes$value('£1200 - £2400')
+									$elm$html$Html$Attributes$value(quoteAsString)
 								]),
 							_List_Nil),
 							A2(
@@ -6960,7 +6984,7 @@ var $author$project$Main$areaSelection = F2(
 			}
 		}();
 		var containerClasses = 'w-full sm:w-1/3 p-2';
-		var checked = _Utils_eq(model.B, choice) ? _List_fromArray(
+		var checked = _Utils_eq(model.s, choice) ? _List_fromArray(
 			[
 				A2($elm$html$Html$Attributes$attribute, 'checked', 'checked')
 			]) : _List_Nil;

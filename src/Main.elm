@@ -381,6 +381,31 @@ renderGetQuote model =
 
         quoteAsString =
             "£" ++ String.fromInt model.quote.start ++ " - £" ++ String.fromInt model.quote.end
+
+        materialValue =
+            case model.material of
+                Block ->
+                    "block"
+
+                Resin ->
+                    "resin"
+
+                Concrete ->
+                    "concrete"
+
+                Tarmac ->
+                    "tarmac"
+
+        areaValue =
+            case model.area of
+                Small ->
+                    "small 10 - 40 m2"
+
+                Medium ->
+                    "medium 40 - 70 m2"
+
+                Large ->
+                    "large 70 - 120 m2"
     in
     div
         [ Attr.class ("flex flex-wrap " ++ visibleClass)
@@ -396,9 +421,9 @@ renderGetQuote model =
                 , Attr.value "quote"
                 ]
                 []
-             , input [ Attr.type_ "hidden", Attr.name "material", Attr.value "block" ] []
-             , input [ Attr.type_ "hidden", Attr.name "area", Attr.value "large" ] []
-             , input [ Attr.type_ "hidden", Attr.name "quote", Attr.value "£1200 - £2400" ] []
+             , input [ Attr.type_ "hidden", Attr.name "material", Attr.value materialValue ] []
+             , input [ Attr.type_ "hidden", Attr.name "area", Attr.value areaValue ] []
+             , input [ Attr.type_ "hidden", Attr.name "quote", Attr.value quoteAsString ] []
              , div
                 [ Attr.class "flex flex-wrap mb-3 w-full"
                 ]
