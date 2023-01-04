@@ -55,7 +55,7 @@
   <script async
           defer
           src="https://{{ config.extra.twicpics_id }}.twic.pics/?v1"></script>
-  <script src="/assets/js/main.js"></script>
+  <script defer src="/assets/js/main.js"></script>
   <link rel="stylesheet" href="/assets/css/theme.css" type="text/css" media="all">
 
   {% block extra_head %}
@@ -106,10 +106,6 @@
 
   {% block body_scripts %}
   {% endblock body_scripts %}
-  <script>
-    var app = Elm.Main.init({
-      node: document.getElementById('myapp')
-    });
-  </script>
+  <script defer src="/assets/js/load_elm.js"></script>
 </body>
 </html>
