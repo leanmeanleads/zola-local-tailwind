@@ -857,12 +857,12 @@ video {
   min-width: 0px;
 }
 
-.max-w-5xl {
-  max-width: 64rem;
-}
-
 .max-w-full {
   max-width: 100%;
+}
+
+.max-w-5xl {
+  max-width: 64rem;
 }
 
 .flex-auto {
