@@ -6,33 +6,21 @@
 {% block header %}
 <module href="/section.html"
         background="white">
+
   <module href="/logo.html"></module>
 
   <module href="/hero_container.html">
+    <module href="/hero_heading.html">{{ page.extra.heading }}</module>
+    <module href="/hero_subheading.html">{{ page.extra.subheading }}</module>
 
-    <h1 class="mt-0 mb-4 text-3xl md:text-5xl font-semibold text-slate-800"
-        style="line-height: 1.2;">
-      {{ page.extra.heading }}
-    </h1>
-    <p class="mt-0 mb-6 text-lg md:text-xl font-normal leading-7">
-      {{ page.extra.subheading }}
-    </p>
+    {% if not page.extra.hide_call_to_actions_in_hero and config.extra.phone_number.value %}
 
-
-    {% if page.extra.hide_call_to_actions_in_hero %}
-    {% elif config.extra.phone_number.value %}
-    <a href="tel:{{ config.extra.phone_number.value }}"
-       class="inline-block relative py-3 px-6 m-1 text-xl font-bold w-10/12 md:w-6/12 leading-normal text-white align-middle whitespace-nowrap rounded border border-solid cursor-pointer select-none sm:max-w-full sm:flex-shrink-0 sm:flex-grow-0 sm:basis-full md:flex-shrink-0 md:flex-grow-0 lg:flex-shrink-0 lg:flex-grow-0 lg:basis-1/2 border-sky-500 bg-sky-500 hover:border-sky-600 hover:bg-sky-600 hover:text-white"
-       style="text-decoration: none; min-height: 1px; transition: none 0s ease 0s;">Call Now {{ config.extra.phone_number.display_value }}</a>
-    <a href="#get-a-free-quote"
-       class="inline-block relative py-3 px-6 m-1 w-10/12 md:w-6/12 text-xl font-bold leading-normal text-white align-middle whitespace-nowrap bg-gray-500 rounded border border-gray-500 border-solid cursor-pointer select-none sm:max-w-full sm:flex-shrink-0 sm:flex-grow-0 sm:basis-full md:flex-shrink-0 md:flex-grow-0 lg:flex-shrink-0 lg:flex-grow-0 lg:basis-1/2 hover:border-gray-600 hover:bg-gray-600 hover:text-white"
-       style="text-decoration: none; min-height: 1px; transition: none 0s ease 0s;">Get a Quote Instantly</a>
-    {% else %}
-    <a href="#get-a-free-quote"
-       class="inline-block relative py-3 px-6 m-1 w-10/12 md:w-6/12 text-xl font-bold leading-normal text-white align-middle whitespace-nowrap bg-gray-500 rounded border border-gray-500 border-solid cursor-pointer select-none sm:max-w-full sm:flex-shrink-0 sm:flex-grow-0 sm:basis-full md:flex-shrink-0 md:flex-grow-0 lg:flex-shrink-0 lg:flex-grow-0 lg:basis-1/2 hover:border-gray-600 hover:bg-gray-600 hover:text-white"
-       style="text-decoration: none; min-height: 1px; transition: none 0s ease 0s;">Get a Quote Instantly</a>
+    <module href="/buttons/call.html"
+            inset="6"></module>
 
     {% endif %}
+
+    <module href="/hero_usps.html"></module>
   </module>
 </module>
 
