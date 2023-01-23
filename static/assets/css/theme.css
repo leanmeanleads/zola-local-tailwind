@@ -743,6 +743,10 @@ video {
   margin-left: auto;
 }
 
+.mr-auto {
+  margin-right: auto;
+}
+
 .mr-1 {
   margin-right: 0.25rem;
 }
