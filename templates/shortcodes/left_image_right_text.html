@@ -4,8 +4,10 @@
       <div class="relative px-0 w-full sm:flex-shrink-0 sm:flex-grow-0 md:basis-1/4 pb-3"
            style="min-height: 1px;">
         <img src="https://{{ config.extra.twicpics_id }}.twic.pics/{{ config.extra.cdn_images_base_path }}/{{ image_path }}?twic=v1/output=preview"
-             class="hidden flex-shrink-0 max-w-full align-middle border-none sm:block h-48 w-full object-cover"
+             class="hidden flex-shrink-0 max-w-full align-middle border-none sm:block w-full object-cover"
              data-twic-src="image:{{ config.extra.cdn_images_base_path}}/{{ image_path }}"
+             data-twic-transform="cover=600x600"
+             data-zoomable
              alt="{{ image_description }}">
       </div>
       <div class="flex relative flex-col px-0 w-full sm:flex-shrink-0 sm:flex-grow-0 md:basis-1/2"
