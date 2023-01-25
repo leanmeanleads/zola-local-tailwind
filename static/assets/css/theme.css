@@ -944,12 +944,12 @@ p {
   max-width: 64rem;
 }
 
-.max-w-full {
-  max-width: 100%;
-}
-
 .max-w-xl {
   max-width: 36rem;
+}
+
+.max-w-full {
+  max-width: 100%;
 }
 
 .flex-auto {
@@ -1252,6 +1252,11 @@ p {
   padding-right: 0.75rem;
 }
 
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -1262,19 +1267,14 @@ p {
   padding-bottom: 1rem;
 }
 
-.py-1 {
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
-}
-
 .py-16 {
   padding-top: 4rem;
   padding-bottom: 4rem;
 }
 
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .pt-2 {
@@ -1289,12 +1289,12 @@ p {
   padding-left: 5rem;
 }
 
-.pb-3 {
-  padding-bottom: 0.75rem;
-}
-
 .pt-1 {
   padding-top: 0.25rem;
+}
+
+.pb-3 {
+  padding-bottom: 0.75rem;
 }
 
 .pl-0 {
@@ -1656,12 +1656,12 @@ p {
     flex-grow: 0;
   }
 
-  .md\:basis-1\/4 {
-    flex-basis: 25%;
-  }
-
   .md\:basis-1\/2 {
     flex-basis: 50%;
+  }
+
+  .md\:basis-1\/4 {
+    flex-basis: 25%;
   }
 
   .md\:py-8 {
