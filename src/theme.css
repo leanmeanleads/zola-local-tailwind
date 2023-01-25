@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 @layer base {
-  h2 {
+  .text h2 {
     @apply mt-0 mb-4 text-2xl md:text-3xl font-semibold text-slate-800;
   }
-  h3 {
+  .text h3 {
     @apply mt-0 mb-4 text-xl md:text-lg font-semibold text-slate-800;
   }
   p {
     @apply mt-0 mb-4 text-base md:text-lg font-normal leading-6;
   }
-  a {
+  .text p a {
     @apply underline font-semibold text-blue-500;
   }
 }

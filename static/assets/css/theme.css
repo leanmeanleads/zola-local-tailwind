@@ -440,7 +440,7 @@ video {
   display: none;
 }
 
-h2 {
+.text h2 {
   margin-top: 0px;
   margin-bottom: 1rem;
   font-size: 1.5rem;
@@ -451,13 +451,13 @@ h2 {
 }
 
 @media (min-width: 768px) {
-  h2 {
+  .text h2 {
     font-size: 1.875rem;
     line-height: 2.25rem;
   }
 }
 
-h3 {
+.text h3 {
   margin-top: 0px;
   margin-bottom: 1rem;
   font-size: 1.25rem;
@@ -468,7 +468,7 @@ h3 {
 }
 
 @media (min-width: 768px) {
-  h3 {
+  .text h3 {
     font-size: 1.125rem;
     line-height: 1.75rem;
   }
@@ -489,7 +489,7 @@ p {
   }
 }
 
-a {
+.text p a {
   font-weight: 600;
   --tw-text-opacity: 1;
   color: rgb(59 130 246 / var(--tw-text-opacity));
