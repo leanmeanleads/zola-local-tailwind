@@ -32,10 +32,11 @@
   <module href="/content/process.html"></module>
 </module>
 
+
 <module href="/blocks/section.html">
   <module href="/blocks/text.html">
-    {% set page = get_page(path="why_us.md") %}
-    {{ page.content | safe }}
+    {% set why_us = get_page(path="why_us.md") %}
+    {{ why_us.content | safe }}
   </module>
 </module>
 
