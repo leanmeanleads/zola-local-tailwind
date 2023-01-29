@@ -4,12 +4,11 @@
 {% endblock nav %}
 
 {% block header %}
-<module href="/section.html"
-        background="white">
+<module href="/blocks/section.html"
+        additional_classes="bg-white">
 
-  <module href="/logo.html"></module>
-
-  <module href="/hero_container.html">
+  <module href="/hero_container_with_image.html">
+    <module href="/logo.html"></module>
     <module href="/hero_heading.html">{{ page.extra.heading }}</module>
     <module href="/hero_subheading.html">{{ page.extra.subheading }}</module>
 
@@ -17,8 +16,10 @@
     <module href="/buttons/call.html"
             inset="6"></module>
     {% endif %}
-
     <module href="/hero_usps.html"></module>
+  </module>
+
+  <module href="/hero_container.html">
 
     <module href="/review_ratings.html"
             major_rating="4"
