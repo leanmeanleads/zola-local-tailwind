@@ -1301,8 +1301,8 @@ p {
   padding-top: 0px;
 }
 
-.pl-20 {
-  padding-left: 5rem;
+.pl-14 {
+  padding-left: 3.5rem;
 }
 
 .pt-1 {
@@ -1315,6 +1315,10 @@ p {
 
 .pl-0 {
   padding-left: 0px;
+}
+
+.pl-20 {
+  padding-left: 5rem;
 }
 
 .pb-4 {
@@ -1680,6 +1684,11 @@ p {
     flex-basis: 25%;
   }
 
+  .md\:px-14 {
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+  }
+
   .md\:py-8 {
     padding-top: 2rem;
     padding-bottom: 2rem;
@@ -1767,6 +1776,10 @@ p {
 
   .lg\:basis-1\/2 {
     flex-basis: 50%;
+  }
+
+  .lg\:pl-2 {
+    padding-left: 0.5rem;
   }
 
   .lg\:pl-0 {
