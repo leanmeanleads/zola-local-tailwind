@@ -33,8 +33,16 @@
   <module href="/content/before_and_after.html" material="{{ page.extra.material }}"></module>
 </module>
 
+<module href="/blocks/section.html" additional_classes="bg-white">
+  <module href="/content/testimonial.html" index="0"></module>
+</module>
+
 <module href="/blocks/section.html">
   <module href="/content/process.html"></module>
+</module>
+
+<module href="/blocks/section.html" additional_classes="bg-white">
+  <module href="/content/testimonial.html" index="1"></module>
 </module>
 
 <module href="/blocks/section.html">
@@ -42,6 +50,10 @@
     {% set why_us = get_page(path="why_us.md") %}
     {{ why_us.content | safe }}
   </module>
+</module>
+
+<module href="/blocks/section.html" additional_classes="bg-white">
+  <module href="/content/testimonial.html" index="2"></module>
 </module>
 
 {% endblock header %}
