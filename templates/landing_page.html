@@ -33,9 +33,17 @@
   <module href="/content/before_and_after.html" material="{{ page.extra.material }}"></module>
 </module>
 
+<module href="/blocks/section.html">
+  <module href="/blocks/text.html">
+    {% set story = get_page(path="story.md") %}
+    {{ story.content | safe }}
+  </module>
+</module>
+
 <module href="/blocks/section.html" additional_classes="bg-white">
   <module href="/content/testimonial.html" index="0"></module>
 </module>
+
 
 <module href="/blocks/section.html">
   <module href="/content/process.html"></module>
