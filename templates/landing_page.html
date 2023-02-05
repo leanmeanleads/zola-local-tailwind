@@ -41,10 +41,6 @@
   <module href="/content/process.html"></module>
 </module>
 
-<module href="/blocks/section.html" additional_classes="bg-white">
-  <module href="/content/testimonial.html" index="1"></module>
-</module>
-
 <module href="/blocks/section.html">
   <module href="/blocks/text.html">
     {% set why_us = get_page(path="why_us.md") %}
@@ -67,6 +63,9 @@
     {% set story = get_page(path="story.md") %}
     {{ story.content | safe }}
   </module>
+</module>
+
+<module href="/blocks/cta.html" heading="{{ page.extra.material | capitalize }} Driveway Company" subheading="Call For A £0 Quote Within 24 Hours">
 </module>
 
 {% endblock content %}
