@@ -7,17 +7,33 @@
 <module href="/blocks/section.html"
         additional_classes="bg-white">
 
-  <module href="/hero_container_with_image.html" material="{{ page.extra.material }}">
+  <module href="/hero_container_with_image.html"
+          material="{{ page.extra.material }}">
 
     <module href="/logo.html"></module>
-    <module href="/hero_heading.html">{{ page.extra.heading }}</module>
-    <module href="/hero_subheading.html">{{ page.extra.subheading }}</module>
 
-    {% if not page.extra.hide_call_to_actions_in_hero and config.extra.phone_number.value %}
-    <module href="/buttons/call.html"
-            inset="6"></module>
-    {% endif %}
+    <module href="/layout/grid_container.html">
+      <module href="/layout/grid_cell.html"
+              additional_classes="w-full md:w-2/3">
+
+        <module href="/hero_heading.html">{{ page.extra.heading }}</module>
+        <module href="/hero_subheading.html">{{ page.extra.subheading }}</module>
+
+        {% if not page.extra.hide_call_to_actions_in_hero and config.extra.phone_number.value %}
+        <module href="/buttons/call.html"
+                inset="6"></module>
+        {% endif %}
+      </module>
+      <module href="/layout/grid_cell.html"
+              additional_classes="hidden md:block md:visible md:w-1/3">
+
+        <module href="/blocks/enquiry_form.html"></module>
+
+      </module>
+    </module>
+
     <module href="/hero_usps.html"></module>
+
   </module>
 
   <module href="/hero_container.html">
