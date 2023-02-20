@@ -988,12 +988,12 @@ p {
   flex-basis: 100%;
 }
 
-.basis-0 {
-  flex-basis: 0px;
-}
-
 .basis-4\/5 {
   flex-basis: 80%;
+}
+
+.basis-0 {
+  flex-basis: 0px;
 }
 
 .transform {
